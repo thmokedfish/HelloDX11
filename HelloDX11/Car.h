@@ -17,7 +17,6 @@ namespace HelloDX11
 		void TurnRight();
 
 	public:
-		Geometry::MeshData<geoVPC> GetMesh();
 	};
 
 }

@@ -76,6 +76,9 @@
     <ClCompile Include="RenderObject.cpp">
       <Filter>内容</Filter>
     </ClCompile>
+    <ClCompile Include="Geometry.cpp">
+      <Filter>内容</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />

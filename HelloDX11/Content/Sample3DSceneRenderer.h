@@ -5,7 +5,7 @@
 #include "..\Common\StepTimer.h"
 #include"RenderObject.h"
 #include "..\Common\DirectXHelper.h"
-
+#include"Geometry.h"
 namespace HelloDX11
 {
 	// 此示例renderer实例化一个基本渲染管道。

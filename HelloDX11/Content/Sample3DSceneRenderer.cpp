@@ -188,6 +188,7 @@ void Sample3DSceneRenderer::Render()
 
 void Sample3DSceneRenderer::CreateDeviceDependentResources()
 {
+	typedef Geometry::VertexPosColor geoVPC;
 	// 通过异步方式加载着色器。
 	auto loadVSTask = DX::ReadDataAsync(L"SampleVertexShader.cso");
 	auto loadPSTask = DX::ReadDataAsync(L"SamplePixelShader.cso");

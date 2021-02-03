@@ -20,7 +20,7 @@ namespace HelloDX11
 		Microsoft::WRL::ComPtr<ID3D11Buffer>		m_constantBuffer;
 	protected:
 		std::vector<RenderObject*> childs;
-		Geometry::MeshData<geoVPC> mesh;
+		//Geometry::MeshData<geoVPC> mesh;
 	public:
 		void SetShader();
 		void Render();
