@@ -62,39 +62,51 @@
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
       <Filter>资产</Filter>
     </Image>
+    <Filter Include="内容\框架">
+      <UniqueIdentifier>{1b116c32-e048-4fa5-b848-b182f5b81872}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="内容\GameObjects">
+      <UniqueIdentifier>{695f6557-ad94-4102-9b36-2727fb051c05}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="HelloDX11Main.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Car.cpp">
+      <Filter>内容\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Wheel.cpp">
+      <Filter>内容\GameObjects</Filter>
+    </ClCompile>
     <ClCompile Include="Geometry.cpp">
-      <Filter>内容</Filter>
+      <Filter>内容\框架</Filter>
     </ClCompile>
-    <ClCompile Include="Content\Car.cpp">
-      <Filter>内容</Filter>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>内容\框架</Filter>
     </ClCompile>
-    <ClCompile Include="Content\RenderObject.cpp">
-      <Filter>内容</Filter>
-    </ClCompile>
-    <ClCompile Include="Content\InputManager.cpp">
-      <Filter>内容</Filter>
+    <ClCompile Include="RenderObject.cpp">
+      <Filter>内容\框架</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="HelloDX11Main.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Car.h">
+      <Filter>内容\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Wheel.h">
+      <Filter>内容\GameObjects</Filter>
+    </ClInclude>
     <ClInclude Include="Geometry.h">
-      <Filter>内容</Filter>
+      <Filter>内容\框架</Filter>
     </ClInclude>
-    <ClInclude Include="Content\RenderObject.h">
-      <Filter>内容</Filter>
+    <ClInclude Include="InputManager.h">
+      <Filter>内容\框架</Filter>
     </ClInclude>
-    <ClInclude Include="Content\Car.h">
-      <Filter>内容</Filter>
-    </ClInclude>
-    <ClInclude Include="Content\InputManager.h">
-      <Filter>内容</Filter>
+    <ClInclude Include="RenderObject.h">
+      <Filter>内容\框架</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

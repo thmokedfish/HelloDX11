@@ -1,7 +1,7 @@
 ﻿#include "pch.h"
 #include "DeviceResources.h"
 #include "DirectXHelper.h"
-#include "../Content/InputManager.h"
+#include "../InputManager.h"
 
 using namespace D2D1;
 using namespace DirectX;
