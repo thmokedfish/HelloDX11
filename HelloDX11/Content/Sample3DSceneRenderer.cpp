@@ -67,12 +67,7 @@ void Sample3DSceneRenderer::CreateWindowSizeDependentResources()
 // 每个帧调用一次，旋转立方体，并计算模型和视图矩阵。
 void Sample3DSceneRenderer::Update(DX::StepTimer const& timer)
 {
-	
-	if (!m_tracking)
-	{
-		root->Render();
-	}
-	
+	root->Update(timer);
 }
 
 
@@ -95,7 +90,6 @@ void Sample3DSceneRenderer::Render()
 	{
 		return;
 	}
-
 	auto context = m_deviceResources->GetD3DDeviceContext();
 
 	// 准备常量缓冲区以将其发送到图形设备。
@@ -135,12 +129,8 @@ void Sample3DSceneRenderer::Render()
 		0
 		);
 
-	// 绘制对象。
-	context->DrawIndexed(
-		m_indexCount,
-		0,
-		0
-		);
+	root->Render();
+
 }
 
 void Sample3DSceneRenderer::CreateDeviceDependentResources()

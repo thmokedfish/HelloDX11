@@ -10,9 +10,9 @@ RenderObject::RenderObject(const std::shared_ptr<DX::DeviceResources>& deviceRes
 void RenderObject::Render()
 {
 	// 加载是异步的。仅在加载几何图形后才会绘制它。
-	if (!m_loadingComplete)
+	//if (!m_loadingComplete)
 	{
-		return;
+	//	return;
 	}
 
 	for (auto p : childs)
@@ -83,7 +83,7 @@ void RenderObject::CreateResources()
 			&m_modelBuffer
 		)
 	);
-	//m_mesh = Geometry::CreateBox
+	m_mesh = Geometry::CreateCylinder<geoVPC>(0.5f, 0.2f, 20, 10, 0, 0, { (1.0f),(0.5f),(0.5f),(1.0f) });
 	std::vector<geoVPC> v = m_mesh.vertexVec;
 	int vsize = v.size();
 	static geoVPC* vertices = new geoVPC[vsize];
