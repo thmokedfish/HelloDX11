@@ -2,7 +2,7 @@
 #include<vector>
 #include<algorithm>
 #include "Sample3DSceneRenderer.h"
-#include"Car.h"
+#include "Car.h"
 using namespace HelloDX11;
 
 using namespace DirectX;
@@ -70,42 +70,17 @@ void Sample3DSceneRenderer::Update(DX::StepTimer const& timer)
 	
 	if (!m_tracking)
 	{
-		// 将度转换成弧度，然后将秒转换为旋转角度
-		float radiansPerSecond = XMConvertToRadians(m_degreesPerSecond);
-		double totalRotation = timer.GetTotalSeconds() * radiansPerSecond;
-		float radians = static_cast<float>(fmod(totalRotation, XM_2PI));
-		Rotate(radians);
-		//if input w
-		//wheel rotate x
-		//if input a/d
-		//wheel rotate y
+		root->Render();
 	}
 	
 }
 
-// 将 3D 立方体模型旋转一定数量的弧度。
-void Sample3DSceneRenderer::Rotate(float radians)
-{
-	// 准备将更新的模型矩阵传递到着色器
-	XMMATRIX model =XMMatrixTranspose(XMMatrixRotationY(radians));
-	model = XMMatrixTranspose(XMMatrixRotationZ(XM_PIDIV2)) * model;
-	XMStoreFloat4x4(&m_modelConstantBufferData.model,model);
-}
 
 void Sample3DSceneRenderer::StartTracking()
 {
 	m_tracking = true;
 }
 
-// 进行跟踪时，可跟踪指针相对于输出屏幕宽度的位置，从而让 3D 立方体围绕其 Y 轴旋转。
-void Sample3DSceneRenderer::TrackingUpdate(float positionX)
-{
-	if (m_tracking)
-	{
-		float radians = XM_2PI * 2.0f * positionX / m_deviceResources->GetOutputSize().Width;
-		Rotate(radians);
-	}
-}
 
 void Sample3DSceneRenderer::StopTracking()
 {
@@ -133,31 +108,6 @@ void Sample3DSceneRenderer::Render()
 		0,
 		0
 		);
-	context->UpdateSubresource1(
-		m_modelConstantBuffer.Get(),
-		0,
-		NULL,
-		&m_modelConstantBufferData,
-		0,
-		0,
-		0
-	);
-	// 每个顶点都是 VertexPositionColor 结构的一个实例。
-	UINT stride = sizeof(Geometry::VertexPosColor);
-	UINT offset = 0;
-	context->IASetVertexBuffers(
-		0,
-		1,
-		m_vertexBuffer.GetAddressOf(),
-		&stride,
-		&offset
-		);
-
-	context->IASetIndexBuffer(
-		m_indexBuffer.Get(),
-		DXGI_FORMAT_R16_UINT, // 每个索引都是一个 16 位无符号整数(short)。
-		0
-		);
 
 	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
@@ -178,13 +128,6 @@ void Sample3DSceneRenderer::Render()
 		nullptr,
 		nullptr
 		);
-	context->VSSetConstantBuffers1(
-		1,
-		1,
-		m_modelConstantBuffer.GetAddressOf(),
-		nullptr,
-		nullptr
-	);
 	// 附加我们的像素着色器。
 	context->PSSetShader(
 		m_pixelShader.Get(),
@@ -254,103 +197,11 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 				&m_constantBuffer
 				)
 			);
-		CD3D11_BUFFER_DESC constantBufferDesc2(sizeof(ModelConstantBuffer), D3D11_BIND_CONSTANT_BUFFER);
-		DX::ThrowIfFailed(
-			m_deviceResources->GetD3DDevice()->CreateBuffer(
-				&constantBufferDesc2,
-				nullptr,
-				&m_modelConstantBuffer
-			)
-		);
-	});/*
-	auto vertexInfoBuffertask = (createPSTask && createVSTask).then([this]() {
-		std::vector<RenderObject> objects;
-		for (auto o : objects)
-		{
-			o.Render();
-		}
-		});*/
+	});
 	// 加载两个着色器后，创建网格。
 	auto createCubeTask = (createPSTask && createVSTask).then([this] () {
-		Geometry::MeshData<geoVPC> mesh = Geometry::CreateCylinder<geoVPC>(0.5f, 0.2f,20,10,0,0,{(1.0f),(0.5f),(0.5f),(1.0f)});
-		std::vector<geoVPC> v=mesh.vertexVec;
-		int vsize = v.size();
-		static geoVPC* vertices = new geoVPC[vsize];
-		std::copy(v.begin(), v.end(), vertices);
-		/*
-		// 加载网格顶点。每个顶点都有一个位置和一个颜色。
-		static const VertexPositionColor cubeVertices[] = 
-		{
-			{XMFLOAT3(-0.5f, -0.5f, -0.5f), XMFLOAT3(0.0f, 0.0f, 0.0f)},
-			{XMFLOAT3(-0.5f, -0.5f,  0.5f), XMFLOAT3(0.0f, 0.0f, 1.0f)},
-			{XMFLOAT3(-0.5f,  0.5f, -0.5f), XMFLOAT3(0.0f, 1.0f, 0.0f)},
-			{XMFLOAT3(-0.5f,  0.5f,  0.5f), XMFLOAT3(0.0f, 1.0f, 1.0f)},
-			{XMFLOAT3( 0.5f, -0.5f, -0.5f), XMFLOAT3(1.0f, 0.0f, 0.0f)},
-			{XMFLOAT3( 0.5f, -0.5f,  0.5f), XMFLOAT3(1.0f, 0.0f, 1.0f)},
-			{XMFLOAT3( 0.5f,  0.5f, -0.5f), XMFLOAT3(1.0f, 1.0f, 0.0f)},
-			{XMFLOAT3( 0.5f,  0.5f,  0.5f), XMFLOAT3(1.0f, 1.0f, 1.0f)},
-		};
-		*/
-		D3D11_SUBRESOURCE_DATA vertexBufferData = {0};
-		vertexBufferData.pSysMem = vertices;
-		vertexBufferData.SysMemPitch = 0;
-		vertexBufferData.SysMemSlicePitch = 0;
-		CD3D11_BUFFER_DESC vertexBufferDesc(sizeof(geoVPC)*vsize, D3D11_BIND_VERTEX_BUFFER);
-		DX::ThrowIfFailed(
-			m_deviceResources->GetD3DDevice()->CreateBuffer(
-				&vertexBufferDesc,
-				&vertexBufferData,
-				&m_vertexBuffer
-				)
-			);
-		/*
-		// 加载网格索引。每三个索引表示
-		// 要在屏幕上呈现的三角形。
-		// 例如: 0,2,1 表示顶点的索引
-		// 顶点缓冲区中的索引为 0、2 和 1 的顶点构成了
-		// 此网格的第一个三角形。
-		static const unsigned short cubeIndices [] =
-		{
-
-			0,1,2, // +x
-			2,3,0,
-
-			4,5,6, // -x
-			6,7,4,
-
-
-			0,1,5, // -y
-			0,5,4,
-
-			2,6,7, // +y
-			2,7,3,
-
-			0,4,6, // -z
-			0,6,2,
-
-			1,3,7, // +z
-			1,7,5,
-		};
-		*/
-		int indexSize = mesh.indexVec.size();
-		unsigned short a[10];
-		static unsigned short* meshIndices=new unsigned short[indexSize];
-		std::copy(mesh.indexVec.begin(), mesh.indexVec.end(), meshIndices);
-		//m_indexCount = ARRAYSIZE(meshIndices);
-		m_indexCount = mesh.indexVec.size();
-
-		D3D11_SUBRESOURCE_DATA indexBufferData = {0};
-		indexBufferData.pSysMem = meshIndices;
-		indexBufferData.SysMemPitch = 0;
-		indexBufferData.SysMemSlicePitch = 0;
-		CD3D11_BUFFER_DESC indexBufferDesc(sizeof(unsigned short)*m_indexCount, D3D11_BIND_INDEX_BUFFER);
-		DX::ThrowIfFailed(
-			m_deviceResources->GetD3DDevice()->CreateBuffer(
-				&indexBufferDesc,
-				&indexBufferData,
-				&m_indexBuffer
-				)
-			);
+		root = std::make_shared<Car>(m_deviceResources);
+		root->CreateResources();
 	});
 
 	// 加载立方体后，就可以呈现该对象了。

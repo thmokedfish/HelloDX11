@@ -24,10 +24,9 @@ namespace HelloDX11
 		bool IsTracking() { return m_tracking; }
 
 
-	private:
-		void Rotate(float radians);
 
 	private:
+		std::shared_ptr<RenderObject> root;
 		// 缓存的设备资源指针。
 		std::shared_ptr<DX::DeviceResources> m_deviceResources;
 

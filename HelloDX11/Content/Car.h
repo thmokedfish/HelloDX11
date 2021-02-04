@@ -17,7 +17,7 @@ namespace HelloDX11
 		void TurnRight();
 		void Rotate(float radias);
 	public:
-		
+		Car(const std::shared_ptr<DX::DeviceResources>& deviceResources):RenderObject(deviceResources){}
 		void Update(DX::StepTimer const& timer) override;
 	};
 

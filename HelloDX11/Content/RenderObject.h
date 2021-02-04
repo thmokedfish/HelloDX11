@@ -25,12 +25,13 @@ namespace HelloDX11
 		ModelConstantBuffer                     	m_modelBufferData;
 		std::vector<RenderObject*> childs;
 		Geometry::MeshData<geoVPC> m_mesh;
-	public:
-		virtual void Update(DX::StepTimer const& timer) = 0;
+	public: 
 		RenderObject(const std::shared_ptr<DX::DeviceResources>& deviceResources);
+		virtual void Update(DX::StepTimer const& timer) = 0;
 		virtual void Render();
 		void CreateResources();
+		void ReleaseDeviceDependentResources();
 		Geometry::MeshData<geoVPC> GetMesh();
-		virtual ~RenderObject() = 0;
+		virtual ~RenderObject() {};
 	};
 }
