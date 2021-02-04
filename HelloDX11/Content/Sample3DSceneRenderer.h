@@ -18,9 +18,6 @@ namespace HelloDX11
 		void ReleaseDeviceDependentResources();
 		void Update(DX::StepTimer const& timer);
 		void Render();
-		void StartTracking();
-		void TrackingUpdate(float positionX);
-		void StopTracking();
 		bool IsTracking() { return m_tracking; }
 
 

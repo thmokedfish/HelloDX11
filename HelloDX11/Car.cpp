@@ -2,6 +2,10 @@
 #include "Car.h"
 using namespace HelloDX11;
 using namespace DirectX;
+Car::Car():RenderObject()
+{
+	//设定轮子位置
+}
 void Car::MoveForward()
 {
 

@@ -1,5 +1,6 @@
 #pragma once
 #include"RenderObject.h"
+#include"Wheel.h"
 namespace HelloDX11
 {
 	class Car :public RenderObject
@@ -15,9 +16,10 @@ namespace HelloDX11
 		void MoveBackward();
 		void TurnLeft();
 		void TurnRight();
-		void Rotate(float radias);
+		void Rotate(float radians);
+		Wheel wheels[4];
 	public:
-		Car(const std::shared_ptr<DX::DeviceResources>& deviceResources):RenderObject(deviceResources){}
+		Car();
 		void Update(DX::StepTimer const& timer) override;
 	};
 

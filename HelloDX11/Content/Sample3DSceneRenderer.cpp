@@ -71,17 +71,6 @@ void Sample3DSceneRenderer::Update(DX::StepTimer const& timer)
 }
 
 
-void Sample3DSceneRenderer::StartTracking()
-{
-	m_tracking = true;
-}
-
-
-void Sample3DSceneRenderer::StopTracking()
-{
-	m_tracking = false;
-}
-
 // 使用顶点和像素着色器呈现一个帧。
 void Sample3DSceneRenderer::Render()
 {
@@ -190,8 +179,8 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 	});
 	// 加载两个着色器后，创建网格。
 	auto createCubeTask = (createPSTask && createVSTask).then([this] () {
-		root = std::make_shared<Car>(m_deviceResources);
-		root->CreateResources();
+		root = std::make_shared<Car>();
+		root->CreateResources(m_deviceResources);
 	});
 
 	// 加载立方体后，就可以呈现该对象了。

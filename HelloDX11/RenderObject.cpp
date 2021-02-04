@@ -4,23 +4,35 @@
 using namespace HelloDX11;
 using namespace DirectX;
 
-RenderObject::RenderObject(const std::shared_ptr<DX::DeviceResources>& deviceResources):m_deviceResources(deviceResources)
+RenderObject::RenderObject()
 {}
+RenderObject::RenderObject(XMFLOAT3 position):m_position(position){}
 
+void RenderObject::Update(DX::StepTimer const& timer)
+{
+	for (auto p : childs)
+	{
+		p->Update(timer);
+	}
+}
+void RenderObject::Transform(const XMFLOAT4X4& parentModel)
+{
+	XMMATRIX model = XMLoadFloat4x4(&m_modelBufferData.model);
+	//先根据自身position和rotation做变换，再应用父物体变换
+	model =XMMatrixTranslationFromVector(XMLoadFloat3(&m_position)) *XMLoadFloat4x4(&m_rotation);
+	XMMATRIX parent = XMLoadFloat4x4(&parentModel);
+	XMStoreFloat4x4(&m_modelBufferData.model, parent * model);
+}
 void RenderObject::Render()
 {
-	// 加载是异步的。仅在加载几何图形后才会绘制它。
-	//if (!m_loadingComplete)
-	{
-	//	return;
-	}
 
 	for (auto p : childs)
 	{
+		p->Transform(m_modelBufferData.model);
 		p->Render();
+		
 	}
 	auto context = m_deviceResources->GetD3DDeviceContext();
-
 	// 准备常量缓冲区以将其发送到图形设备。
 	context->UpdateSubresource1(
 		m_modelBuffer.Get(),
@@ -69,12 +81,13 @@ void RenderObject::Render()
 		0
 	);
 }
-void RenderObject::CreateResources()
+void RenderObject::CreateResources(const std::shared_ptr<DX::DeviceResources>& deviceResources)
 {
 	for (auto p : childs)
 	{
-		p->CreateResources();
+		p->CreateResources(deviceResources);
 	}
+	m_deviceResources = deviceResources;
 	CD3D11_BUFFER_DESC constantBufferDesc(sizeof(ModelConstantBuffer), D3D11_BIND_CONSTANT_BUFFER);
 	DX::ThrowIfFailed(
 		m_deviceResources->GetD3DDevice()->CreateBuffer(

@@ -10,6 +10,13 @@ namespace HelloDX11
 	};
 	struct ModelConstantBuffer
 	{
+		ModelConstantBuffer()
+		{
+			for (int i = 0; i < 4; ++i)
+			{
+				model(i,i) = 1;
+			}
+		}
 		DirectX::XMFLOAT4X4 model;
 	};
 	// 用于向顶点着色器发送每个顶点的数据。
