@@ -4,7 +4,16 @@ using namespace HelloDX11;
 using namespace DirectX;
 Car::Car():RenderObject()
 {
+	for (int i = 0; i < 4; ++i)
+	{
+		std::shared_ptr<RenderObject> w = std::make_shared<Wheel>();
+		childs.push_back(w);
+	}
 	//设定轮子位置
+	childs[0]->setPosition(XMFLOAT3(0.5f, 0, 0.5f));
+	childs[1]->setPosition(XMFLOAT3(0.5f, 0, -0.5f));
+	childs[2]->setPosition(XMFLOAT3(-0.5f, 0, 0.5f));
+	childs[3]->setPosition(XMFLOAT3(-0.5f, 0, -0.5f));
 }
 void Car::MoveForward()
 {
@@ -18,28 +27,21 @@ void Car::TurnLeft()
 {
 
 }
-
+Geometry::MeshData<geoVPC> Car::CreateMesh()
+{
+	return Geometry::CreateBox<geoVPC>(0.2f, 0.2f, 0.4f);
+}
 void Car::TurnRight()
 {
 
 }
-void Car::Update(DX::StepTimer const& timer)
+void Car::OnUpdate(DX::StepTimer const& timer)
 {
 	float degreesPerSecond = 45;
-	// 将度转换成弧度，然后将秒转换为旋转角度
+
 	float radiansPerSecond = XMConvertToRadians(degreesPerSecond);
 	double totalRotation = timer.GetTotalSeconds() * radiansPerSecond;
 	float radians = static_cast<float>(fmod(totalRotation, XM_2PI));
-	Rotate(radians);
-	//if input w
-	//wheel rotate x
-	//if input a/d
-	//wheel rotate y
-}
-
-void Car::Rotate(float radians)
-{
-	XMMATRIX model = XMMatrixTranspose(XMMatrixRotationY(radians));
-	model = XMMatrixTranspose(XMMatrixRotationZ(XM_PIDIV2)) * model;
-	XMStoreFloat4x4(&m_modelBufferData.model, model);
+	
+	m_rotation= XMMatrixTranspose(XMMatrixRotationY(radians));
 }

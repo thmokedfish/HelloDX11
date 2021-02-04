@@ -4,7 +4,7 @@
 using namespace HelloDX11;
 using namespace DirectX;
 
-RenderObject::RenderObject()
+RenderObject::RenderObject():m_position(),m_rotation(XMMatrixIdentity())
 {}
 RenderObject::RenderObject(XMFLOAT3 position):m_position(position){}
 
@@ -14,22 +14,20 @@ void RenderObject::Update(DX::StepTimer const& timer)
 	{
 		p->Update(timer);
 	}
+	OnUpdate(timer);
 }
 void RenderObject::Transform(const XMFLOAT4X4& parentModel)
 {
-	XMMATRIX model = XMLoadFloat4x4(&m_modelBufferData.model);
-	//先根据自身position和rotation做变换，再应用父物体变换
-	model =XMMatrixTranslationFromVector(XMLoadFloat3(&m_position)) *XMLoadFloat4x4(&m_rotation);
-	XMMATRIX parent = XMLoadFloat4x4(&parentModel);
-	XMStoreFloat4x4(&m_modelBufferData.model, parent * model);
 }
-void RenderObject::Render()
+void RenderObject::Render(const XMMATRIX& parentModel)
 {
-
+	//先根据自身position和rotation做变换
+	XMMATRIX model =parentModel* XMMatrixTranspose(XMMatrixTranslationFromVector(XMLoadFloat3(&m_position)))*m_rotation ;
+	XMStoreFloat4x4(&m_modelBufferData.model, model);
 	for (auto p : childs)
 	{
-		p->Transform(m_modelBufferData.model);
-		p->Render();
+		//p->Transform(m_modelBufferData.model);
+		p->Render(model);
 		
 	}
 	auto context = m_deviceResources->GetD3DDeviceContext();
@@ -96,7 +94,7 @@ void RenderObject::CreateResources(const std::shared_ptr<DX::DeviceResources>& d
 			&m_modelBuffer
 		)
 	);
-	m_mesh = Geometry::CreateCylinder<geoVPC>(0.5f, 0.2f, 20, 10, 0, 0, { (1.0f),(0.5f),(0.5f),(1.0f) });
+	m_mesh = CreateMesh();
 	std::vector<geoVPC> v = m_mesh.vertexVec;
 	int vsize = v.size();
 	static geoVPC* vertices = new geoVPC[vsize];
@@ -138,11 +136,9 @@ void RenderObject::CreateResources(const std::shared_ptr<DX::DeviceResources>& d
 	);
 
 }
-Geometry::MeshData<geoVPC> RenderObject::GetMesh()
-{
-	return m_mesh;
-}
 
+DirectX::XMFLOAT3 RenderObject::getPosition() { return m_position; }
+void RenderObject::setPosition(XMFLOAT3 pos) { m_position = pos; }
 void RenderObject::ReleaseDeviceDependentResources()
 {
 	m_inputLayout.Reset();

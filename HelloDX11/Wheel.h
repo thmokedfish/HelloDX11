@@ -4,8 +4,10 @@ namespace HelloDX11
 {
 	class Wheel : public RenderObject
 	{
+	protected:
+		Geometry::MeshData<geoVPC> CreateMesh() override;
 	public:
-		void Update(DX::StepTimer const& timer) override;
+		void OnUpdate(DX::StepTimer const& timer) override;
 		void Rotate(float radians);
 	};
 }

@@ -15,12 +15,11 @@ namespace HelloDX11
 		void MoveForward();
 		void MoveBackward();
 		void TurnLeft();
+		Geometry::MeshData<geoVPC> CreateMesh() override;
 		void TurnRight();
-		void Rotate(float radians);
-		Wheel wheels[4];
 	public:
 		Car();
-		void Update(DX::StepTimer const& timer) override;
+		void OnUpdate(DX::StepTimer const& timer) override;
 	};
 
 }

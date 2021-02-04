@@ -118,7 +118,7 @@ void Sample3DSceneRenderer::Render()
 		0
 		);
 
-	root->Render();
+	root->Render( DirectX::XMMatrixIdentity());
 
 }
 

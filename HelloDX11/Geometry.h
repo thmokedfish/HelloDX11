@@ -2,6 +2,7 @@
 #include "pch.h"
 #include<map>
 #include<vector>
+#include<string>
 
 namespace Geometry
 {
