@@ -2,7 +2,7 @@
 #include<vector>
 #include<algorithm>
 #include "Sample3DSceneRenderer.h"
-
+#include"Car.h"
 using namespace HelloDX11;
 
 using namespace DirectX;
@@ -89,7 +89,7 @@ void Sample3DSceneRenderer::Rotate(float radians)
 	// 准备将更新的模型矩阵传递到着色器
 	XMMATRIX model =XMMatrixTranspose(XMMatrixRotationY(radians));
 	model = XMMatrixTranspose(XMMatrixRotationZ(XM_PIDIV2)) * model;
-	XMStoreFloat4x4(&m_constantBufferData.model,model);
+	XMStoreFloat4x4(&m_modelConstantBufferData.model,model);
 }
 
 void Sample3DSceneRenderer::StartTracking()
@@ -133,7 +133,15 @@ void Sample3DSceneRenderer::Render()
 		0,
 		0
 		);
-
+	context->UpdateSubresource1(
+		m_modelConstantBuffer.Get(),
+		0,
+		NULL,
+		&m_modelConstantBufferData,
+		0,
+		0,
+		0
+	);
 	// 每个顶点都是 VertexPositionColor 结构的一个实例。
 	UINT stride = sizeof(Geometry::VertexPosColor);
 	UINT offset = 0;
@@ -170,7 +178,13 @@ void Sample3DSceneRenderer::Render()
 		nullptr,
 		nullptr
 		);
-
+	context->VSSetConstantBuffers1(
+		1,
+		1,
+		m_modelConstantBuffer.GetAddressOf(),
+		nullptr,
+		nullptr
+	);
 	// 附加我们的像素着色器。
 	context->PSSetShader(
 		m_pixelShader.Get(),
@@ -240,8 +254,22 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 				&m_constantBuffer
 				)
 			);
-	});
-
+		CD3D11_BUFFER_DESC constantBufferDesc2(sizeof(ModelConstantBuffer), D3D11_BIND_CONSTANT_BUFFER);
+		DX::ThrowIfFailed(
+			m_deviceResources->GetD3DDevice()->CreateBuffer(
+				&constantBufferDesc2,
+				nullptr,
+				&m_modelConstantBuffer
+			)
+		);
+	});/*
+	auto vertexInfoBuffertask = (createPSTask && createVSTask).then([this]() {
+		std::vector<RenderObject> objects;
+		for (auto o : objects)
+		{
+			o.Render();
+		}
+		});*/
 	// 加载两个着色器后，创建网格。
 	auto createCubeTask = (createPSTask && createVSTask).then([this] () {
 		Geometry::MeshData<geoVPC> mesh = Geometry::CreateCylinder<geoVPC>(0.5f, 0.2f,20,10,0,0,{(1.0f),(0.5f),(0.5f),(1.0f)});

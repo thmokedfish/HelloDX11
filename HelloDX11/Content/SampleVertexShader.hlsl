@@ -1,11 +1,14 @@
 // 存储用于构成几何图形的三个基本列优先矩阵的常量缓冲区。
 cbuffer ModelViewProjectionConstantBuffer : register(b0)
 {
-	matrix model;
+	//matrix model;
 	matrix view;
 	matrix projection;
 };
-
+cbuffer ModelConstantBuffer:register(b1)
+{
+	matrix model;
+}
 // 用作顶点着色器输入的每个顶点的数据。
 struct VertexShaderInput
 {

@@ -15,8 +15,10 @@ namespace HelloDX11
 		void MoveBackward();
 		void TurnLeft();
 		void TurnRight();
-
+		void Rotate(float radias);
 	public:
+		
+		void Update(DX::StepTimer const& timer) override;
 	};
 
 }

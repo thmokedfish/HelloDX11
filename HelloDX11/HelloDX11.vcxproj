@@ -251,8 +251,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
-    <ClInclude Include="Car.h" />
     <ClInclude Include="Common\DeviceResources.h" />
+    <ClInclude Include="Content\Car.h" />
+    <ClInclude Include="Content\InputManager.h" />
+    <ClInclude Include="Content\RenderObject.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="HelloDX11Main.h" />
     <ClInclude Include="Common\DirectXHelper.h" />
@@ -260,19 +262,18 @@
     <ClInclude Include="Content\Sample3DSceneRenderer.h" />
     <ClInclude Include="Content\SampleFpsTextRenderer.h" />
     <ClInclude Include="Content\ShaderStructures.h" />
-    <ClInclude Include="InputManager.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="RenderObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
-    <ClCompile Include="Car.cpp" />
     <ClCompile Include="Common\DeviceResources.cpp" />
+    <ClCompile Include="Content\Car.cpp" />
+    <ClCompile Include="Content\InputManager.cpp" />
+    <ClCompile Include="Content\RenderObject.cpp" />
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="HelloDX11Main.cpp" />
     <ClCompile Include="Content\SampleFpsTextRenderer.cpp" />
     <ClCompile Include="Content\Sample3DSceneRenderer.cpp" />
-    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -283,7 +284,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="RenderObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

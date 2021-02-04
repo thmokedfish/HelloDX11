@@ -38,9 +38,11 @@ namespace HelloDX11
 		Microsoft::WRL::ComPtr<ID3D11VertexShader>	m_vertexShader;
 		Microsoft::WRL::ComPtr<ID3D11PixelShader>	m_pixelShader;
 		Microsoft::WRL::ComPtr<ID3D11Buffer>		m_constantBuffer;
+		Microsoft::WRL::ComPtr<ID3D11Buffer>	    m_modelConstantBuffer;
 
 		// 立体几何的系统资源。
 		ModelViewProjectionConstantBuffer	m_constantBufferData;
+		ModelConstantBuffer m_modelConstantBufferData;
 		uint32	m_indexCount;
 
 		// 用于渲染循环的变量。
