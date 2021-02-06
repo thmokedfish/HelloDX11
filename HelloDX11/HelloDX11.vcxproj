@@ -258,6 +258,8 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="Reference\DDSTextureLoader11.h" />
+    <ClInclude Include="Reference\WICTextureLoader11.h" />
     <ClInclude Include="RenderObject.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="HelloDX11Main.h" />
@@ -267,6 +269,7 @@
     <ClInclude Include="Content\SampleFpsTextRenderer.h" />
     <ClInclude Include="Content\ShaderStructures.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="SkyRenderer.h" />
     <ClInclude Include="Wheel.h" />
   </ItemGroup>
   <ItemGroup>
@@ -278,6 +281,8 @@
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Model.cpp" />
+    <ClCompile Include="Reference\DDSTextureLoader11.cpp" />
+    <ClCompile Include="Reference\WICTextureLoader11.cpp" />
     <ClCompile Include="RenderObject.cpp" />
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="HelloDX11Main.cpp" />
@@ -293,6 +298,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="SkyRenderer.cpp" />
     <ClCompile Include="Wheel.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -307,6 +313,8 @@
     <FxCompile Include="Content\SampleVertexShader.hlsl">
       <ShaderType>Vertex</ShaderType>
     </FxCompile>
+    <FxCompile Include="Sky_PS.hlsl" />
+    <FxCompile Include="Sky_VS.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

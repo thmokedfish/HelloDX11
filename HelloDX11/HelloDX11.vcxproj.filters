@@ -65,8 +65,11 @@
     <Filter Include="内容\GameObjects">
       <UniqueIdentifier>{695f6557-ad94-4102-9b36-2727fb051c05}</UniqueIdentifier>
     </Filter>
-    <Filter Include="通用\框架">
+    <Filter Include="通用\Common">
       <UniqueIdentifier>{1b116c32-e048-4fa5-b848-b182f5b81872}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Reference">
+      <UniqueIdentifier>{b39c4541-eb56-4473-a8bd-6e89474691c8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -80,26 +83,33 @@
       <Filter>内容\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Geometry.cpp">
-      <Filter>通用\框架</Filter>
+      <Filter>通用\Common</Filter>
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
-      <Filter>通用\框架</Filter>
+      <Filter>通用\Common</Filter>
     </ClCompile>
     <ClCompile Include="RenderObject.cpp">
-      <Filter>通用\框架</Filter>
+      <Filter>通用\Common</Filter>
     </ClCompile>
     <ClCompile Include="Item.cpp">
       <Filter>内容\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>通用\框架</Filter>
+      <Filter>通用\Common</Filter>
     </ClCompile>
     <ClCompile Include="Model.cpp">
-      <Filter>通用\框架</Filter>
+      <Filter>通用\Common</Filter>
     </ClCompile>
     <ClCompile Include="Ground.cpp">
       <Filter>内容\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Reference\DDSTextureLoader11.cpp">
+      <Filter>Reference</Filter>
+    </ClCompile>
+    <ClCompile Include="Reference\WICTextureLoader11.cpp">
+      <Filter>Reference</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -112,26 +122,33 @@
       <Filter>内容\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Geometry.h">
-      <Filter>通用\框架</Filter>
+      <Filter>通用\Common</Filter>
     </ClInclude>
     <ClInclude Include="InputManager.h">
-      <Filter>通用\框架</Filter>
+      <Filter>通用\Common</Filter>
     </ClInclude>
     <ClInclude Include="RenderObject.h">
-      <Filter>通用\框架</Filter>
+      <Filter>通用\Common</Filter>
     </ClInclude>
     <ClInclude Include="Item.h">
       <Filter>内容\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>通用\框架</Filter>
+      <Filter>通用\Common</Filter>
     </ClInclude>
     <ClInclude Include="Model.h">
-      <Filter>通用\框架</Filter>
+      <Filter>通用\Common</Filter>
     </ClInclude>
     <ClInclude Include="Ground.h">
       <Filter>内容\GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="Reference\DDSTextureLoader11.h">
+      <Filter>Reference</Filter>
+    </ClInclude>
+    <ClInclude Include="Reference\WICTextureLoader11.h">
+      <Filter>Reference</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\StoreLogo.png">
@@ -140,5 +157,9 @@
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Sky_PS.hlsl" />
+    <FxCompile Include="Sky_VS.hlsl" />
   </ItemGroup>
 </Project>
