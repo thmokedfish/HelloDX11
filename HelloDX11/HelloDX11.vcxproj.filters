@@ -141,4 +141,9 @@
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Sample.hlsli">
+      <Filter>内容</Filter>
+    </None>
+  </ItemGroup>
 </Project>

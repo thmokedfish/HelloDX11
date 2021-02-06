@@ -59,6 +59,10 @@ void Sample3DSceneRenderer::CreateWindowSizeDependentResources()
 }
 void Sample3DSceneRenderer::Update(DX::StepTimer const& timer)
 {
+	if (!m_loadingComplete)
+	{
+		return;
+	}
 	RenderObject::m_timer = &timer;
 	root->Update();
 	camera.OnUpdate(); 
