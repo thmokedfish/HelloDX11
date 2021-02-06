@@ -251,9 +251,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Common\DeviceResources.h" />
     <ClInclude Include="Car.h" />
+    <ClInclude Include="Ground.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="Model.h" />
     <ClInclude Include="RenderObject.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="HelloDX11Main.h" />
@@ -267,9 +271,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Common\DeviceResources.cpp" />
     <ClCompile Include="Car.cpp" />
+    <ClCompile Include="Ground.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Model.cpp" />
     <ClCompile Include="RenderObject.cpp" />
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="HelloDX11Main.cpp" />

@@ -3,33 +3,32 @@
 #include <Common/DirectXHelper.h>
 using namespace HelloDX11;
 using namespace DirectX;
-
 RenderObject::RenderObject():m_position(),m_rotation(XMMatrixIdentity())
-{}
-RenderObject::RenderObject(XMFLOAT3 position):m_position(position){}
-
-void RenderObject::Update(DX::StepTimer const& timer)
+{
+	m_scale = XMVectorSet(1, 1, 1, 1);
+}
+const DX::StepTimer* RenderObject::m_timer ;
+void RenderObject::Update()
 {
 	for (auto p : childs)
 	{
-		p->Update(timer);
+		p->Update();
 	}
-	OnUpdate(timer);
+	OnUpdate();
 }
-void RenderObject::Transform(const XMFLOAT4X4& parentModel)
-{
-}
+
 void RenderObject::Render(const XMMATRIX& parentModel)
 {
-	//先根据自身position和rotation做变换
-	XMMATRIX model =parentModel* XMMatrixTranspose(XMMatrixTranslationFromVector(XMLoadFloat3(&m_position)))*m_rotation ;
-	XMStoreFloat4x4(&m_modelBufferData.model, model);
+	XMFLOAT3 scale; 
+	XMStoreFloat3(&scale, m_scale);
+	XMMATRIX model =XMMatrixScaling(scale.x,scale.y,scale.z)* m_rotation *XMMatrixTranslationFromVector(m_position)* parentModel;
 	for (auto p : childs)
 	{
-		//p->Transform(m_modelBufferData.model);
 		p->Render(model);
 		
 	}
+	//最后存转置后的
+	DirectX::XMStoreFloat4x4(&m_modelBufferData.model, XMMatrixTranspose(model));
 	auto context = m_deviceResources->GetD3DDeviceContext();
 	// 准备常量缓冲区以将其发送到图形设备。
 	context->UpdateSubresource1(
@@ -137,12 +136,44 @@ void RenderObject::CreateResources(const std::shared_ptr<DX::DeviceResources>& d
 
 }
 
-DirectX::XMFLOAT3 RenderObject::getPosition() { return m_position; }
-void RenderObject::setPosition(XMFLOAT3 pos) { m_position = pos; }
+DirectX::XMVECTOR RenderObject::getPosition() { return m_position; }
+void RenderObject::setPosition(XMVECTOR pos) { m_position = pos; }
+void RenderObject::setScale(DirectX::XMVECTOR scale) { m_scale = scale; }
+void RenderObject::setRotation(XMMATRIX rotation) { m_rotation = rotation; }
+void RenderObject::Rotate(XMMATRIX trans)
+{
+	m_rotation = m_rotation * trans;
+}
+
+DirectX::XMVECTOR RenderObject::Forward()
+{
+
+	XMVECTOR origin = XMVectorSet(0, 0, 1, 1);
+	
+	return XMVector4Transform(origin, m_rotation);
+}
+DirectX::XMVECTOR RenderObject::Right()
+{
+
+	XMVECTOR origin = XMVectorSet(1, 0,0 , 1);
+
+	return XMVector4Transform(origin, m_rotation);
+}
+DirectX::XMVECTOR RenderObject::Up()
+{
+
+	XMVECTOR origin = XMVectorSet(0, 1, 0, 1);
+
+	return XMVector4Transform(origin, m_rotation);
+}
 void RenderObject::ReleaseDeviceDependentResources()
 {
 	m_inputLayout.Reset();
 	m_modelBuffer.Reset();
 	m_vertexBuffer.Reset();
 	m_indexBuffer.Reset();
+}
+void RenderObject::addChild(std::shared_ptr<RenderObject> child)
+{
+	childs.push_back(child);
 }

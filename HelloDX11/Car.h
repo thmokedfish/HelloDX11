@@ -7,19 +7,27 @@ namespace HelloDX11
 	{
 
 	private:
-		enum Direction
+		float m_speed;
+		float m_wheelrotation;
+		float maxspeed;
+		float ac;
+	private:
+		enum MoveState
 		{
-			LEFT, RIGHT, FORWARD
+			FORWARD,BACK,STOP
 		};
-		Direction state;
-		void MoveForward();
-		void MoveBackward();
-		void TurnLeft();
+		enum WheelState
+		{
+			LEFT, RIGHT,RECOVER
+		};
+		MoveState carstate;
+		WheelState wheelstate;
+		void Move();
+		void Turn();
 		Geometry::MeshData<geoVPC> CreateMesh() override;
-		void TurnRight();
 	public:
 		Car();
-		void OnUpdate(DX::StepTimer const& timer) override;
+		void OnUpdate() override;
 	};
 
 }

@@ -1,0 +1,35 @@
+#include "pch.h"
+#include "Ground.h"
+using namespace HelloDX11;
+using namespace DirectX;
+using namespace Geometry;
+Geometry::MeshData<geoVPC> Ground::CreateMesh()
+{
+    float width = 5; float height = 0.1f; float depth = 5;
+    XMFLOAT4 white = { 1.0f, 1.0f, 1.0f, 1.0f };
+    XMFLOAT4 blue = { 0.5f,0.5f,1.0f,1.0f };
+    XMFLOAT4 red = { 1,0.5f,0.5f,1.0f };
+    MeshData<VertexPosColor, DWORD> meshData;
+    meshData.vertexVec.resize(4);
+
+    float w2 = width / 2, h2 = height / 2, d2 = depth / 2;
+    meshData.vertexVec[0].pos = XMFLOAT3(-w2, h2, -d2);
+    meshData.vertexVec[1].pos = XMFLOAT3(-w2, h2, d2);
+    meshData.vertexVec[2].pos = XMFLOAT3(w2, h2, d2);
+    meshData.vertexVec[3].pos = XMFLOAT3(w2, h2, -d2);
+
+    meshData.vertexVec[0].color = red;
+    meshData.vertexVec[1].color = white;
+    meshData.vertexVec[2].color = white;
+    meshData.vertexVec[3].color = blue;
+
+    meshData.indexVec = {
+        2, 1, 0, 0, 3, 2,       
+    };
+
+    return meshData;
+}
+
+void Ground::OnUpdate()
+{
+}

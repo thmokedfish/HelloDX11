@@ -3,6 +3,7 @@
 #include<algorithm>
 #include "Sample3DSceneRenderer.h"
 #include "Car.h"
+#include"Ground.h"
 using namespace HelloDX11;
 
 using namespace DirectX;
@@ -56,18 +57,18 @@ void Sample3DSceneRenderer::CreateWindowSizeDependentResources()
 		&m_constantBufferData.projection,
 		XMMatrixTranspose(perspectiveMatrix * orientationMatrix)
 		);
-	// 眼睛位于(0,0.7,1.5)，并沿着 Y 轴使用向上矢量查找点(0,-0.1,0)。
 	static const XMVECTORF32 eye = { 0.0f, 0.7f, 1.5f, 0.0f };
 	static const XMVECTORF32 at = { 0.0f, -0.1f, 0.0f, 0.0f };
 	static const XMVECTORF32 up = { 0.0f, 1.0f, 0.0f, 0.0f };
 
-	XMStoreFloat4x4(&m_constantBufferData.view, XMMatrixTranspose(XMMatrixLookAtRH(eye, at, up)));
+	//XMStoreFloat4x4(&m_constantBufferData.view, XMMatrixTranspose(XMMatrixLookAtRH(eye, at, up)));
 }
-
-// 每个帧调用一次，旋转立方体，并计算模型和视图矩阵。
 void Sample3DSceneRenderer::Update(DX::StepTimer const& timer)
 {
-	root->Update(timer);
+	RenderObject::m_timer = &timer;
+	root->Update();
+	camera.OnUpdate(); 
+	XMStoreFloat4x4(&m_constantBufferData.view, XMMatrixTranspose(camera.LookAt()));
 }
 
 
@@ -81,6 +82,7 @@ void Sample3DSceneRenderer::Render()
 	}
 	auto context = m_deviceResources->GetD3DDeviceContext();
 
+	context->OMSetDepthStencilState(m_depthStencilState.Get(), 0);
 	// 准备常量缓冲区以将其发送到图形设备。
 	context->UpdateSubresource1(
 		m_constantBuffer.Get(),
@@ -179,8 +181,19 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 	});
 	// 加载两个着色器后，创建网格。
 	auto createCubeTask = (createPSTask && createVSTask).then([this] () {
-		root = std::make_shared<Car>();
+		root = std::make_shared<Ground>();
+		std::shared_ptr<RenderObject> car = std::make_shared<Car>();
+		car->setPosition(XMVectorSet(0, 0.18f, 0, 1));
+		root->addChild(car);
+		camera.SetFollow(car.get());
 		root->CreateResources(m_deviceResources);
+
+		D3D11_DEPTH_STENCIL_DESC depthDesc;
+		depthDesc.DepthEnable = true;
+		depthDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+		depthDesc.DepthFunc = D3D11_COMPARISON_LESS;
+
+		m_deviceResources->GetD3DDevice()->CreateDepthStencilState(&depthDesc, m_depthStencilState.GetAddressOf());
 	});
 
 	// 加载立方体后，就可以呈现该对象了。

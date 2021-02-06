@@ -49,8 +49,8 @@ void SampleFpsTextRenderer::Update(DX::StepTimer const& timer)
 	// 更新显示文本。
 	uint32 fps = timer.GetFramesPerSecond();
 
-	m_text = (fps > 0) ? std::to_wstring(fps) + L" FPS" : L" - FPS";
-
+	//m_text = (fps > 0) ? std::to_wstring(fps) + L" FPS" : L" - FPS";
+	m_text = L"空格切换视角,WASD移动";
 	ComPtr<IDWriteTextLayout> textLayout;
 	DX::ThrowIfFailed(
 		m_deviceResources->GetDWriteFactory()->CreateTextLayout(

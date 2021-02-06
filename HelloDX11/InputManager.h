@@ -18,7 +18,7 @@ namespace HelloDX11
 			static InputManager^ instance = ref new InputManager();
 			return instance;
 		}
-		bool GetKey(Windows::System::VirtualKey key);
+		static bool GetKey(Windows::System::VirtualKey key);
 		void Init(_In_ Windows::UI::Core::CoreWindow^ window);
 		void OnKeyDown(_In_ Windows::UI::Core::CoreWindow^ sender,
 			_In_ Windows::UI::Core::KeyEventArgs^ args);
@@ -28,7 +28,6 @@ namespace HelloDX11
 			_In_ Windows::UI::Core::KeyEventArgs^ args
 		);
 
-		void Update(Windows::UI::Core::CoreWindow^ window);
 
 	};
 }

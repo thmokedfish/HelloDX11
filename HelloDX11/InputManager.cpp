@@ -7,7 +7,7 @@ using namespace Windows::System;
 namespace HelloDX11
 {
     bool InputManager::GetKey(VirtualKey key){
-        return activeKey[key];
+        return GetInstance()->activeKey[key];
 	}
 	void InputManager::Init(_In_ Windows::UI::Core::CoreWindow^ window)
 	{
@@ -51,9 +51,5 @@ namespace HelloDX11
     }
 
 
-	void InputManager::Update(Windows::UI::Core::CoreWindow^ window)
-	{
-
-	}
 
 }

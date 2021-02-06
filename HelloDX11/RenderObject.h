@@ -23,19 +23,26 @@ namespace HelloDX11
 		bool	m_loadingComplete;
 		ModelConstantBuffer                     	m_modelBufferData;
 	protected:
-		DirectX::XMFLOAT3 m_position;
+		DirectX::XMVECTOR m_position;
 		DirectX::XMMATRIX m_rotation;
+		DirectX::XMVECTOR m_scale;
 		std::vector<std::shared_ptr<RenderObject>> childs;
 		Geometry::MeshData<geoVPC> m_mesh;
-		void Transform(const DirectX::XMFLOAT4X4& parentModel);
 		virtual Geometry::MeshData<geoVPC> CreateMesh()=0;
-	public: 
+	public:
 		RenderObject();
-		RenderObject(DirectX::XMFLOAT3 position);
-		DirectX::XMFLOAT3 getPosition();
-		void setPosition(DirectX::XMFLOAT3 pos);
-		void Update(DX::StepTimer const& timer);
-		virtual void OnUpdate(DX::StepTimer const& timer) = 0;
+		DirectX::XMVECTOR Forward();
+		DirectX::XMVECTOR Right();
+		DirectX::XMVECTOR Up();
+		static const DX::StepTimer* m_timer;
+		DirectX::XMVECTOR getPosition();
+		void addChild(std::shared_ptr<RenderObject> child);
+		void setPosition(DirectX::XMVECTOR pos);
+		void setScale(DirectX::XMVECTOR scale);
+		void setRotation(DirectX::XMMATRIX rotation);
+		void Rotate(DirectX::XMMATRIX transform);
+		void Update();
+		virtual void OnUpdate() = 0;
 		virtual void Render(const DirectX::XMMATRIX& parentModel);
 		void CreateResources(const std::shared_ptr<DX::DeviceResources>& deviceResources);
 		void ReleaseDeviceDependentResources();

@@ -6,6 +6,7 @@
 #include"RenderObject.h"
 #include "..\Common\DirectXHelper.h"
 #include"Geometry.h"
+#include"Camera.h"
 namespace HelloDX11
 {
 	// 此示例renderer实例化一个基本渲染管道。
@@ -24,6 +25,7 @@ namespace HelloDX11
 
 	private:
 		std::shared_ptr<RenderObject> root;
+		Camera camera;
 		// 缓存的设备资源指针。
 		std::shared_ptr<DX::DeviceResources> m_deviceResources;
 
@@ -35,6 +37,7 @@ namespace HelloDX11
 		Microsoft::WRL::ComPtr<ID3D11PixelShader>	m_pixelShader;
 		Microsoft::WRL::ComPtr<ID3D11Buffer>		m_constantBuffer;
 		Microsoft::WRL::ComPtr<ID3D11Buffer>	    m_modelConstantBuffer;
+		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> m_depthStencilState;
 
 		// 立体几何的系统资源。
 		ModelViewProjectionConstantBuffer	m_constantBufferData;

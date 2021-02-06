@@ -2,12 +2,12 @@
 #include "RenderObject.h"
 namespace HelloDX11
 {
-	class Wheel : public RenderObject
-	{
+    class Ground : public RenderObject
+    {
 	protected:
 		Geometry::MeshData<geoVPC> CreateMesh() override;
 	public:
 		void OnUpdate() override;
-	};
+    };
 }
 

@@ -62,11 +62,11 @@
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
       <Filter>资产</Filter>
     </Image>
-    <Filter Include="内容\框架">
-      <UniqueIdentifier>{1b116c32-e048-4fa5-b848-b182f5b81872}</UniqueIdentifier>
-    </Filter>
     <Filter Include="内容\GameObjects">
       <UniqueIdentifier>{695f6557-ad94-4102-9b36-2727fb051c05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="通用\框架">
+      <UniqueIdentifier>{1b116c32-e048-4fa5-b848-b182f5b81872}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -80,13 +80,25 @@
       <Filter>内容\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Geometry.cpp">
-      <Filter>内容\框架</Filter>
+      <Filter>通用\框架</Filter>
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
-      <Filter>内容\框架</Filter>
+      <Filter>通用\框架</Filter>
     </ClCompile>
     <ClCompile Include="RenderObject.cpp">
-      <Filter>内容\框架</Filter>
+      <Filter>通用\框架</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>内容\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>通用\框架</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>通用\框架</Filter>
+    </ClCompile>
+    <ClCompile Include="Ground.cpp">
+      <Filter>内容\GameObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -100,13 +112,25 @@
       <Filter>内容\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Geometry.h">
-      <Filter>内容\框架</Filter>
+      <Filter>通用\框架</Filter>
     </ClInclude>
     <ClInclude Include="InputManager.h">
-      <Filter>内容\框架</Filter>
+      <Filter>通用\框架</Filter>
     </ClInclude>
     <ClInclude Include="RenderObject.h">
-      <Filter>内容\框架</Filter>
+      <Filter>通用\框架</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>内容\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>通用\框架</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>通用\框架</Filter>
+    </ClInclude>
+    <ClInclude Include="Ground.h">
+      <Filter>内容\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
