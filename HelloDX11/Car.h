@@ -10,6 +10,7 @@ namespace HelloDX11
 		float m_speed;
 		float m_wheelrotation;
 		float maxspeed;
+		float maxav;
 		float ac;
 	private:
 		enum MoveState

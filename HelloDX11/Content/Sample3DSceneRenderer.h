@@ -7,6 +7,7 @@
 #include "..\Common\DirectXHelper.h"
 #include"Geometry.h"
 #include"Camera.h"
+#include"SkyRenderer.h"
 namespace HelloDX11
 {
 	// 此示例renderer实例化一个基本渲染管道。
@@ -38,6 +39,9 @@ namespace HelloDX11
 		Microsoft::WRL::ComPtr<ID3D11Buffer>		m_constantBuffer;
 		Microsoft::WRL::ComPtr<ID3D11Buffer>	    m_modelConstantBuffer;
 		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> m_depthStencilState;
+		Microsoft::WRL::ComPtr<ID3D11RasterizerState>	m_rasterizerState;
+
+		//SkyRenderer skyRenderer;
 
 		// 立体几何的系统资源。
 		ModelViewProjectionConstantBuffer	m_constantBufferData;

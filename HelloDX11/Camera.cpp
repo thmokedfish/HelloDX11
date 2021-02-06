@@ -15,13 +15,13 @@ void Camera::OnUpdate()
 	if (following)
 	{
 		XMVECTOR diff = eyediff;
-		if (InputManager::GetKey(VirtualKey::Space))
+		//if (InputManager::GetKey(VirtualKey::Space))
 		{
 			//diff = XMVector3Transform(eyediff, XMMatrixRotationY(XM_PIDIV2));
 		}
 		XMVECTOR pos = following->getPosition();
 
-		if (InputManager::GetKey(VirtualKey::Space))
+		//if (InputManager::GetKey(VirtualKey::Space))
 		{
 			eye = pos + diff;
 			at = pos + atdiff;

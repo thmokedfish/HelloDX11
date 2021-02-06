@@ -9,6 +9,7 @@ Geometry::MeshData<geoVPC> Ground::CreateMesh()
     XMFLOAT4 white = { 1.0f, 1.0f, 1.0f, 1.0f };
     XMFLOAT4 blue = { 0.5f,0.5f,1.0f,1.0f };
     XMFLOAT4 red = { 1,0.5f,0.5f,1.0f };
+    XMFLOAT4 black = { 0,0,0,1 };
     MeshData<VertexPosColor, DWORD> meshData;
     meshData.vertexVec.resize(4);
 
@@ -19,12 +20,12 @@ Geometry::MeshData<geoVPC> Ground::CreateMesh()
     meshData.vertexVec[3].pos = XMFLOAT3(w2, h2, -d2);
 
     meshData.vertexVec[0].color = red;
-    meshData.vertexVec[1].color = white;
-    meshData.vertexVec[2].color = white;
-    meshData.vertexVec[3].color = blue;
+    meshData.vertexVec[1].color = black;
+    meshData.vertexVec[2].color = blue;
+    meshData.vertexVec[3].color = white ;
 
     meshData.indexVec = {
-        2, 1, 0, 0, 3, 2,       
+        0, 1, 2, 2, 3, 0,       
     };
 
     return meshData;

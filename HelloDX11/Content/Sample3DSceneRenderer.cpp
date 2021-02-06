@@ -30,7 +30,6 @@ void Sample3DSceneRenderer::CreateWindowSizeDependentResources()
 	float fovAngleY = 70.0f * XM_PI / 180.0f;
 
 	// 这是一个简单的更改示例，当应用程序在纵向视图或对齐视图中时，可以进行此更改
-	//。
 	if (aspectRatio < 1.0f)
 	{
 		fovAngleY *= 2.0f;
@@ -57,11 +56,6 @@ void Sample3DSceneRenderer::CreateWindowSizeDependentResources()
 		&m_constantBufferData.projection,
 		XMMatrixTranspose(perspectiveMatrix * orientationMatrix)
 		);
-	static const XMVECTORF32 eye = { 0.0f, 0.7f, 1.5f, 0.0f };
-	static const XMVECTORF32 at = { 0.0f, -0.1f, 0.0f, 0.0f };
-	static const XMVECTORF32 up = { 0.0f, 1.0f, 0.0f, 0.0f };
-
-	//XMStoreFloat4x4(&m_constantBufferData.view, XMMatrixTranspose(XMMatrixLookAtRH(eye, at, up)));
 }
 void Sample3DSceneRenderer::Update(DX::StepTimer const& timer)
 {
@@ -72,18 +66,17 @@ void Sample3DSceneRenderer::Update(DX::StepTimer const& timer)
 }
 
 
-// 使用顶点和像素着色器呈现一个帧。
 void Sample3DSceneRenderer::Render()
 {
-	// 加载是异步的。仅在加载几何图形后才会绘制它。
 	if (!m_loadingComplete)
 	{
 		return;
 	}
 	auto context = m_deviceResources->GetD3DDeviceContext();
-
+	context->RSSetState(m_rasterizerState.Get());
 	context->OMSetDepthStencilState(m_depthStencilState.Get(), 0);
-	// 准备常量缓冲区以将其发送到图形设备。
+
+
 	context->UpdateSubresource1(
 		m_constantBuffer.Get(),
 		0,
@@ -93,19 +86,17 @@ void Sample3DSceneRenderer::Render()
 		0,
 		0
 		);
-
+	
 	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	context->IASetInputLayout(m_inputLayout.Get());
 
-	// 附加我们的顶点着色器。
 	context->VSSetShader(
 		m_vertexShader.Get(),
 		nullptr,
 		0
 		);
 
-	// 将常量缓冲区发送到图形设备。
 	context->VSSetConstantBuffers1(
 		0,
 		1,
@@ -113,7 +104,7 @@ void Sample3DSceneRenderer::Render()
 		nullptr,
 		nullptr
 		);
-	// 附加我们的像素着色器。
+
 	context->PSSetShader(
 		m_pixelShader.Get(),
 		nullptr,
@@ -121,7 +112,7 @@ void Sample3DSceneRenderer::Render()
 		);
 
 	root->Render( DirectX::XMMatrixIdentity());
-
+	//skyRenderer.Render(context);
 }
 
 void Sample3DSceneRenderer::CreateDeviceDependentResources()
@@ -141,13 +132,6 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 				&m_vertexShader
 				)
 			);
-		/*
-		static const D3D11_INPUT_ELEMENT_DESC vertexDesc [] =
-		{
-			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		};
-		*/
 		DX::ThrowIfFailed(
 			m_deviceResources->GetD3DDevice()->CreateInputLayout(
 				geoVPC::inputLayout,
@@ -179,8 +163,8 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 				)
 			);
 	});
-	// 加载两个着色器后，创建网格。
-	auto createCubeTask = (createPSTask && createVSTask).then([this] () {
+
+	auto createResourcesTask = (createPSTask && createVSTask).then([this] () {
 		root = std::make_shared<Ground>();
 		std::shared_ptr<RenderObject> car = std::make_shared<Car>();
 		car->setPosition(XMVectorSet(0, 0.18f, 0, 1));
@@ -193,11 +177,23 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 		depthDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 		depthDesc.DepthFunc = D3D11_COMPARISON_LESS;
 
-		m_deviceResources->GetD3DDevice()->CreateDepthStencilState(&depthDesc, m_depthStencilState.GetAddressOf());
+		
+		ID3D11Device* device = m_deviceResources->GetD3DDevice();
+		device->CreateDepthStencilState(&depthDesc, m_depthStencilState.GetAddressOf());
+
+
+		D3D11_RASTERIZER_DESC rasterizerDesc; 
+		ZeroMemory(&rasterizerDesc, sizeof(rasterizerDesc));
+		rasterizerDesc.FillMode = D3D11_FILL_SOLID;
+		rasterizerDesc.CullMode = D3D11_CULL_BACK;
+		rasterizerDesc.FrontCounterClockwise = true;
+		rasterizerDesc.DepthClipEnable = true;
+		
+		device->CreateRasterizerState(&rasterizerDesc, m_rasterizerState.GetAddressOf()); 
+		//skyRenderer.Init(device);
 	});
 
-	// 加载立方体后，就可以呈现该对象了。
-	createCubeTask.then([this] () {
+	createResourcesTask.then([this] () {
 		m_loadingComplete = true;
 	});
 }

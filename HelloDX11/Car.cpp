@@ -5,7 +5,7 @@
 using namespace HelloDX11;
 using namespace DirectX;
 using namespace Windows::System;
-Car::Car():RenderObject(),m_speed(0),m_wheelrotation(0),maxspeed(1.2f),ac(0.02f)
+Car::Car():RenderObject(),m_speed(0),m_wheelrotation(0),maxspeed(4),maxav(1.5f),ac(0.02f)
 {
 	setRotation(XMMatrixRotationY(XM_PIDIV2));
 	for (int i = 0; i < 4; ++i)
@@ -45,7 +45,8 @@ void Car::Move()
 			m_speed += ac;
 		}
 	}
-	m_rotation *= XMMatrixRotationY(m_speed*m_wheelrotation/30);
+	float av = m_speed * maxav / maxspeed;
+	m_rotation *= XMMatrixRotationY(av*m_wheelrotation/45);
 
 	//Î»ÒÆ
 	m_position+= m_speed*0.002f*Forward();
@@ -87,9 +88,9 @@ void Car::Turn()
 Geometry::MeshData<geoVPC> Car::CreateMesh()
 {
 	Geometry::MeshData<geoVPC> mesh = Geometry::CreateBox<geoVPC>(0.3f, 0.15f, 0.4f, { 0.5f,0.5f,1,1 });
-	for (int i = 0; i < mesh.vertexVec.size(); i += 3)
+	//for (int i = 0; i < mesh.vertexVec.size(); i += 3)
 	{
-		mesh.vertexVec[i].color = { 1,1,1,1 };
+	//	mesh.vertexVec[i].color = { 1,1,1,1 };
 	}
 	return mesh;
 }
