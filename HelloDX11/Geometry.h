@@ -78,9 +78,7 @@ namespace Geometry
             static_assert(std::is_unsigned<IndexType>::value, "IndexType must be unsigned integer!");
         }
     };
-    template<class VertexType = VertexPosNormalTex, class IndexType = DWORD>
-    MeshData<VertexType, IndexType> CreateSphere(float radius = 1.0f, UINT levels = 20, UINT slices = 20,
-        const DirectX::XMFLOAT4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
+
     // 创建立方体网格数据
     template<class VertexType = VertexPosNormalTex, class IndexType = DWORD>
     MeshData<VertexType, IndexType> CreateBox(float width = 2.0f, float height = 2.0f, float depth = 2.0f,
@@ -96,97 +94,6 @@ namespace Geometry
     template<class VertexType = VertexPosNormalTex, class IndexType = DWORD>
     MeshData<VertexType, IndexType> CreateCylinder(float radius = 1.0f, float height = 2.0f, UINT slices = 20, UINT stacks=10, float texU=0, float texV=0,
         const DirectX::XMFLOAT4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
-
-    template<class VertexType, class IndexType>
-    inline MeshData<VertexType, IndexType> CreateSphere(float radius, UINT levels, UINT slices, const DirectX::XMFLOAT4& color)
-    {
-        using namespace DirectX;
-
-        MeshData<VertexType, IndexType> meshData;
-        UINT vertexCount = 2 + (levels - 1) * (slices + 1);
-        UINT indexCount = 6 * (levels - 1) * slices;
-        meshData.vertexVec.resize(vertexCount);
-        meshData.indexVec.resize(indexCount);
-
-        Internal::VertexData vertexData;
-        IndexType vIndex = 0, iIndex = 0;
-
-        float phi = 0.0f, theta = 0.0f;
-        float per_phi = XM_PI / levels;
-        float per_theta = XM_2PI / slices;
-        float x, y, z;
-
-        // 放入顶端点
-        vertexData = { XMFLOAT3(0.0f, radius, 0.0f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f), color, XMFLOAT2(0.0f, 0.0f) };
-        Internal::InsertVertexElement(meshData.vertexVec[vIndex++], vertexData);
-
-        for (UINT i = 1; i < levels; ++i)
-        {
-            phi = per_phi * i;
-            // 需要slices + 1个顶点是因为 起点和终点需为同一点，但纹理坐标值不一致
-            for (UINT j = 0; j <= slices; ++j)
-            {
-                theta = per_theta * j;
-                x = radius * sinf(phi) * cosf(theta);
-                y = radius * cosf(phi);
-                z = radius * sinf(phi) * sinf(theta);
-                // 计算出局部坐标、法向量、Tangent向量和纹理坐标
-                XMFLOAT3 pos = XMFLOAT3(x, y, z), normal;
-                XMStoreFloat3(&normal, XMVector3Normalize(XMLoadFloat3(&pos)));
-
-                vertexData = { pos, normal, XMFLOAT4(-sinf(theta), 0.0f, cosf(theta), 1.0f), color, XMFLOAT2(theta / XM_2PI, phi / XM_PI) };
-                Internal::InsertVertexElement(meshData.vertexVec[vIndex++], vertexData);
-            }
-        }
-
-        // 放入底端点
-        vertexData = { XMFLOAT3(0.0f, -radius, 0.0f), XMFLOAT3(0.0f, -1.0f, 0.0f),
-            XMFLOAT4(-1.0f, 0.0f, 0.0f, 1.0f), color, XMFLOAT2(0.0f, 1.0f) };
-        Internal::InsertVertexElement(meshData.vertexVec[vIndex++], vertexData);
-
-
-        // 逐渐放入索引
-        if (levels > 1)
-        {
-            for (UINT j = 1; j <= slices; ++j)
-            {
-                meshData.indexVec[iIndex++] = 0;
-                meshData.indexVec[iIndex++] = j % (slices + 1) + 1;
-                meshData.indexVec[iIndex++] = j;
-            }
-        }
-
-
-        for (UINT i = 1; i < levels - 1; ++i)
-        {
-            for (UINT j = 1; j <= slices; ++j)
-            {
-                meshData.indexVec[iIndex++] = (i - 1) * (slices + 1) + j;
-                meshData.indexVec[iIndex++] = (i - 1) * (slices + 1) + j % (slices + 1) + 1;
-                meshData.indexVec[iIndex++] = i * (slices + 1) + j % (slices + 1) + 1;
-
-                meshData.indexVec[iIndex++] = i * (slices + 1) + j % (slices + 1) + 1;
-                meshData.indexVec[iIndex++] = i * (slices + 1) + j;
-                meshData.indexVec[iIndex++] = (i - 1) * (slices + 1) + j;
-            }
-        }
-
-        // 逐渐放入索引
-        if (levels > 1)
-        {
-            for (UINT j = 1; j <= slices; ++j)
-            {
-                meshData.indexVec[iIndex++] = (levels - 2) * (slices + 1) + j;
-                meshData.indexVec[iIndex++] = (levels - 2) * (slices + 1) + j % (slices + 1) + 1;
-                meshData.indexVec[iIndex++] = (levels - 1) * (slices + 1) + 1;
-            }
-        }
-
-
-        return meshData;
-    }
-
-
 
     template<class VertexType, class IndexType>
     inline MeshData<VertexType, IndexType> CreateBox(float width, float height, float depth, const DirectX::XMFLOAT4& color)
@@ -273,12 +180,12 @@ namespace Geometry
         }
 
         meshData.indexVec = {
-         0, 1, 2, 2, 3, 0,        // 右面(+X面)
-        4, 5, 6, 6, 7, 4,        // 左面(-X面)
-        8, 9, 10, 10, 11, 8,    // 顶面(+Y面)
-        12, 13, 14, 14, 15, 12,    // 底面(-Y面)
-        16, 17, 18, 18, 19, 16, // 背面(+Z面)
-        20, 21, 22, 22, 23, 20    // 正面(-Z面)
+            0, 1, 2, 2, 3, 0,        // 右面(+X面)
+            4, 5, 6, 6, 7, 4,        // 左面(-X面)
+            8, 9, 10, 10, 11, 8,    // 顶面(+Y面)
+            12, 13, 14, 14, 15, 12,    // 底面(-Y面)
+            16, 17, 18, 18, 19, 16, // 背面(+Z面)
+            20, 21, 22, 22, 23, 20    // 正面(-Z面)
         };
 
         return meshData;
@@ -327,9 +234,9 @@ namespace Geometry
             {
                 meshData.indexVec[iIndex++] = i * (slices + 1) + j;
                 meshData.indexVec[iIndex++] = (i + 1) * (slices + 1) + j;
-                meshData.indexVec[iIndex++] =(i + 1)* (slices + 1) + j + 1;
+                meshData.indexVec[iIndex++] = (i + 1) * (slices + 1) + j + 1;
 
-                meshData.indexVec[iIndex++] =  i* (slices + 1) + j;
+                meshData.indexVec[iIndex++] = i * (slices + 1) + j;
                 meshData.indexVec[iIndex++] = (i + 1) * (slices + 1) + j + 1;
                 meshData.indexVec[iIndex++] = i * (slices + 1) + j + 1;
             }
@@ -396,9 +303,9 @@ namespace Geometry
         // 放入顶部三角形索引
         for (UINT i = 1; i <= slices; ++i)
         {
-            meshData.indexVec[iIndex++] = offset ;
+            meshData.indexVec[iIndex++] = offset;
             meshData.indexVec[iIndex++] = offset + i % (slices + 1) + 1;
-            meshData.indexVec[iIndex++] = offset+i;
+            meshData.indexVec[iIndex++] = offset + i;
         }
 
         // 放入底部三角形索引
@@ -407,7 +314,7 @@ namespace Geometry
         {
             meshData.indexVec[iIndex++] = offset;
             meshData.indexVec[iIndex++] = offset + i;
-            meshData.indexVec[iIndex++] =  offset + i % (slices + 1) + 1;
+            meshData.indexVec[iIndex++] = offset + i % (slices + 1) + 1;
         }
 
         return meshData;
