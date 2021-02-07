@@ -18,17 +18,21 @@ namespace HelloDX11
 		Microsoft::WRL::ComPtr<ID3D11VertexShader>	m_vertexShader;
 		Microsoft::WRL::ComPtr<ID3D11PixelShader>	m_pixelShader;
 		Microsoft::WRL::ComPtr<ID3D11Buffer>		m_modelBuffer;
-		std::shared_ptr<DX::DeviceResources>		m_deviceResources;
 		uint32	m_indexCount;
 		bool	m_loadingComplete;
 		ModelConstantBuffer                     	m_modelBufferData;
 	protected:
+		std::shared_ptr<DX::DeviceResources>		m_deviceResources;
+		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> m_depthStencilState;
+		Microsoft::WRL::ComPtr<ID3D11RasterizerState>	m_rasterizerState;
 		DirectX::XMVECTOR m_position;
 		DirectX::XMMATRIX m_rotation;
 		DirectX::XMVECTOR m_scale;
 		std::vector<std::shared_ptr<RenderObject>> childs;
 		Geometry::MeshData<geoVPC> m_mesh;
 		virtual Geometry::MeshData<geoVPC> CreateMesh()=0;
+		virtual void CreateState();
+		virtual void SetState();
 	public:
 		RenderObject();
 		DirectX::XMVECTOR Forward();

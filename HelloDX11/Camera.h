@@ -14,6 +14,8 @@ namespace HelloDX11
 		DirectX::XMMATRIX LookAt();
 		void SetFollow(RenderObject* following);
 		void OnUpdate();
+		DirectX::XMVECTOR getPosition();
+		
 	private:
 		DirectX::XMVECTOR eye;
 		DirectX::XMVECTOR at;

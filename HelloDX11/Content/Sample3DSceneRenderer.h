@@ -37,8 +37,6 @@ namespace HelloDX11
 		Microsoft::WRL::ComPtr<ID3D11PixelShader>	m_pixelShader;
 		Microsoft::WRL::ComPtr<ID3D11Buffer>		m_constantBuffer;
 		Microsoft::WRL::ComPtr<ID3D11Buffer>	    m_modelConstantBuffer;
-		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> m_depthStencilState;
-		Microsoft::WRL::ComPtr<ID3D11RasterizerState>	m_rasterizerState;
 
 		//SkyRenderer skyRenderer;
 

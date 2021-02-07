@@ -4,6 +4,7 @@
 #include "Sample3DSceneRenderer.h"
 #include "Car.h"
 #include"Ground.h"
+#include"Skybox.h"
 using namespace HelloDX11;
 
 using namespace DirectX;
@@ -77,8 +78,6 @@ void Sample3DSceneRenderer::Render()
 		return;
 	}
 	auto context = m_deviceResources->GetD3DDeviceContext();
-	context->RSSetState(m_rasterizerState.Get());
-	context->OMSetDepthStencilState(m_depthStencilState.Get(), 0);
 
 
 	context->UpdateSubresource1(
@@ -172,28 +171,14 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 		root = std::make_shared<Ground>();
 		std::shared_ptr<RenderObject> car = std::make_shared<Car>();
 		car->setPosition(XMVectorSet(0, 0.18f, 0, 1));
+		std::shared_ptr<RenderObject> sky = std::make_shared<Skybox>();
+		Skybox* p = (Skybox*)sky.get();
+		p->SetFollow(&camera);
 		root->addChild(car);
+		root->addChild(sky);
 		camera.SetFollow(car.get());
 		root->CreateResources(m_deviceResources);
 
-		D3D11_DEPTH_STENCIL_DESC depthDesc;
-		depthDesc.DepthEnable = true;
-		depthDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-		depthDesc.DepthFunc = D3D11_COMPARISON_LESS;
-
-		
-		ID3D11Device* device = m_deviceResources->GetD3DDevice();
-		device->CreateDepthStencilState(&depthDesc, m_depthStencilState.GetAddressOf());
-
-
-		D3D11_RASTERIZER_DESC rasterizerDesc; 
-		ZeroMemory(&rasterizerDesc, sizeof(rasterizerDesc));
-		rasterizerDesc.FillMode = D3D11_FILL_SOLID;
-		rasterizerDesc.CullMode = D3D11_CULL_BACK;
-		rasterizerDesc.FrontCounterClockwise = true;
-		rasterizerDesc.DepthClipEnable = true;
-		
-		device->CreateRasterizerState(&rasterizerDesc, m_rasterizerState.GetAddressOf()); 
 		//skyRenderer.Init(device);
 	});
 

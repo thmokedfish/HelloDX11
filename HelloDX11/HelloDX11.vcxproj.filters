@@ -100,6 +100,7 @@
     <ClCompile Include="Ground.cpp">
       <Filter>内容\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Skybox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -132,6 +133,7 @@
     <ClInclude Include="Ground.h">
       <Filter>内容\GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="Skybox.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\StoreLogo.png">

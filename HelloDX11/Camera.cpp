@@ -36,3 +36,4 @@ void Camera::SetFollow(RenderObject* following)
 	eyediff = eye - pos;
 	atdiff = at -pos;
 }
+DirectX::XMVECTOR Camera::getPosition() { return eye; }

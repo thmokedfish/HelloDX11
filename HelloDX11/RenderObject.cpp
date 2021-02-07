@@ -30,6 +30,9 @@ void RenderObject::Render(const XMMATRIX& parentModel)
 	//最后存转置后的
 	DirectX::XMStoreFloat4x4(&m_modelBufferData.model, XMMatrixTranspose(model));
 	auto context = m_deviceResources->GetD3DDeviceContext();
+
+	SetState();
+
 	// 准备常量缓冲区以将其发送到图形设备。
 	context->UpdateSubresource1(
 		m_modelBuffer.Get(),
@@ -133,7 +136,7 @@ void RenderObject::CreateResources(const std::shared_ptr<DX::DeviceResources>& d
 			&m_indexBuffer
 		)
 	);
-
+	CreateState();
 }
 
 DirectX::XMVECTOR RenderObject::getPosition() { return m_position; }
@@ -176,4 +179,33 @@ void RenderObject::ReleaseDeviceDependentResources()
 void RenderObject::addChild(std::shared_ptr<RenderObject> child)
 {
 	childs.push_back(child);
+}
+void RenderObject::CreateState(){
+
+
+	D3D11_DEPTH_STENCIL_DESC depthDesc;
+	depthDesc.DepthEnable = true;
+	depthDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	depthDesc.DepthFunc = D3D11_COMPARISON_LESS;
+
+
+	ID3D11Device* device = m_deviceResources->GetD3DDevice();
+	device->CreateDepthStencilState(&depthDesc, m_depthStencilState.GetAddressOf());
+
+
+	D3D11_RASTERIZER_DESC rasterizerDesc;
+	ZeroMemory(&rasterizerDesc, sizeof(rasterizerDesc));
+	rasterizerDesc.FillMode = D3D11_FILL_SOLID;
+	rasterizerDesc.CullMode = D3D11_CULL_BACK;
+	rasterizerDesc.FrontCounterClockwise = true;
+	rasterizerDesc.DepthClipEnable = true;
+
+	device->CreateRasterizerState(&rasterizerDesc, m_rasterizerState.GetAddressOf());
+
+}
+void RenderObject::SetState()
+{
+	auto context = m_deviceResources->GetD3DDeviceContext();
+	context->RSSetState(m_rasterizerState.Get());
+	context->OMSetDepthStencilState(m_depthStencilState.Get(), 0);
 }
