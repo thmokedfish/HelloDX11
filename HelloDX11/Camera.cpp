@@ -4,7 +4,10 @@
 using namespace HelloDX11;
 using namespace DirectX;
 using namespace Windows::System;
-Camera::Camera():following(NULL),eye({ 0.0f, 0.5f, 1.5f, 0.0f }),at({ 0.0f, -0.1f, 0.0f, 0.0f }),up({ 0.0f, 1.0f, 0.0f, 0.0f }){}
+Camera::Camera():following(NULL),eyeorigin({ 0.0f, 1, 1.5f, 0.0f }),atorigin({ 0.0f, -0.1f, 0.0f, 0.0f }),up({ 0.0f, 1.0f, 0.0f, 0.0f }){
+	eye = eyeorigin;
+	at=atorigin;
+}
 
 DirectX::XMMATRIX Camera::LookAt()
 {
@@ -14,26 +17,33 @@ void Camera::OnUpdate()
 {
 	if (following)
 	{
-		XMVECTOR diff = eyediff;
-		//if (InputManager::GetKey(VirtualKey::Space))
-		{
-			//diff = XMVector3Transform(eyediff, XMMatrixRotationY(XM_PIDIV2));
-		}
-		XMVECTOR pos = following->getPosition();
+		float mouseX = InputManager::GetMouseX();
+		float mouseY = InputManager::GetMouseY();
+		float sensitivity = 0.002f;
+		//第三人称
+		XMVECTOR atV = atorigin - eyeorigin;
+		//先绕x轴
+		atV = XMVector3Transform(atV, XMMatrixRotationX(sensitivity * mouseY));
+		atV = XMVector3Transform(atV, XMMatrixRotationY(sensitivity * mouseX));
+		at = atV + eyeorigin;
 
-		//if (InputManager::GetKey(VirtualKey::Space))
-		{
-			eye = pos + diff;
-			at = pos + atdiff;
-		}
+
+		XMVECTOR cardiff = following->getPosition() - carorigin;
+
+		eye = eyeorigin + cardiff;
+		at += cardiff;
+
 	}
 
 }
 void Camera::SetFollow(RenderObject* following)
 {
 	this->following = following;
-	XMVECTOR pos=following->getPosition();
-	eyediff = eye - pos;
-	atdiff = at -pos;
+	carorigin=following->getPosition();
+	
+	//eyediff = eye - pos;
+	//atdiff = at -pos;
+
+	
 }
 DirectX::XMVECTOR Camera::getPosition() { return eye; }

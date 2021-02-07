@@ -68,6 +68,9 @@
     <Filter Include="通用\框架">
       <UniqueIdentifier>{1b116c32-e048-4fa5-b848-b182f5b81872}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{69900d00-0d97-4e89-9938-d492072adda1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
@@ -147,5 +150,16 @@
     <None Include="Content\Sample.hlsli">
       <Filter>内容</Filter>
     </None>
+    <None Include="Shaders\TexPos.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shaders\TexPosPixellShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\TexPosVertexShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

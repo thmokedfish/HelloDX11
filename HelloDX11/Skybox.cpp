@@ -19,6 +19,8 @@ Geometry::MeshData<geoVPC> Skybox::CreateMesh()
 	mesh.vertexVec[9].color = topColor;
 	mesh.vertexVec[10].color = topColor;
 	mesh.vertexVec[11].color = topColor;
+	mesh.vertexVec[17].color = topColor;
+	mesh.vertexVec[18].color = topColor;
 	mesh.vertexVec[21].color = topColor;
 	mesh.vertexVec[22].color = topColor;
 	return mesh;

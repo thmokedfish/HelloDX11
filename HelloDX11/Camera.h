@@ -17,11 +17,14 @@ namespace HelloDX11
 		DirectX::XMVECTOR getPosition();
 		
 	private:
+		DirectX::XMVECTOR atorigin;
 		DirectX::XMVECTOR eye;
 		DirectX::XMVECTOR at;
 		DirectX::XMVECTOR up;
-		DirectX::XMVECTOR eyediff;
-		DirectX::XMVECTOR atdiff;
+		DirectX::XMVECTOR carorigin;
+		DirectX::XMVECTOR eyeorigin;
+		//DirectX::XMVECTOR eyediff;
+		//DirectX::XMVECTOR atdiff;
 		RenderObject* following;
 	};
 

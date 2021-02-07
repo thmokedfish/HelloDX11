@@ -11,7 +11,10 @@ namespace HelloDX11
 		//typedef void(*funcp)();
 		std::unordered_map<Windows::System::VirtualKey, std::vector<void*>> keyEvents;
 		std::unordered_map<Windows::System::VirtualKey, bool> activeKey;
-		InputManager() {}
+		InputManager():mouseXorigin(nullptr),mouseYorigin(nullptr) {}
+		float mouseX; float mouseY;
+		std::unique_ptr <float> mouseXorigin;
+		std::unique_ptr <float> mouseYorigin;
 	public:
 		static InputManager^ GetInstance()
 		{
@@ -19,7 +22,14 @@ namespace HelloDX11
 			return instance;
 		}
 		static bool GetKey(Windows::System::VirtualKey key);
-		void Init(_In_ Windows::UI::Core::CoreWindow^ window);
+		static float GetMouseX();
+		static float GetMouseY();
+		void Init(_In_ Windows::UI::Core::CoreWindow^ window); 
+		void OnPointerMoved(
+			_In_ Windows::UI::Core::CoreWindow^ sender,
+			_In_ Windows::UI::Core::PointerEventArgs^ args
+		);
+
 		void OnKeyDown(_In_ Windows::UI::Core::CoreWindow^ sender,
 			_In_ Windows::UI::Core::KeyEventArgs^ args);
 
@@ -27,7 +37,7 @@ namespace HelloDX11
 			_In_ Windows::UI::Core::CoreWindow^ sender,
 			_In_ Windows::UI::Core::KeyEventArgs^ args
 		);
-
+		
 
 	};
 }
