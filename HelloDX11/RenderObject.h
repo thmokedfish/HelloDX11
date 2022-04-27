@@ -43,6 +43,10 @@ namespace HelloDX11
 		void addChild(std::shared_ptr<RenderObject> child);
 		void setPosition(DirectX::XMVECTOR pos);
 		void setScale(DirectX::XMVECTOR scale);
+		/*
+		* Both XMVECTOR and XMMATRIX have alignment requirements, so it is not recommended to use them directly as class/struct variables. 
+		* If you are following that advice, then you need to use XMStoreFloat4x4 and XMLoadFloat4x4 to convert between XMFLOAT4X4 and XMMATRIX
+		*/
 		void setRotation(DirectX::XMMATRIX rotation);
 		void Rotate(DirectX::XMMATRIX transform);
 		void Update();

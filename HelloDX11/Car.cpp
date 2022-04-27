@@ -45,7 +45,10 @@ void Car::Move()
 			m_speed += ac;
 		}
 	}
+	//(s/maxspeed)*maxav，maxav：最大旋转速度
 	float av = m_speed * maxav / maxspeed;
+	//小车旋转
+	//wheelrotation范围(-45,45)，wheelrotation/45以映射到(-1,1)
 	m_rotation *= XMMatrixRotationY(av*m_wheelrotation/45);
 
 	//位移
