@@ -3,11 +3,11 @@
 #include <Common/DirectXHelper.h>
 using namespace HelloDX11;
 using namespace DirectX;
-RenderObject::RenderObject():m_position(),m_rotation(XMMatrixIdentity())
+RenderObject::RenderObject():m_transform()
 {
-	m_scale = XMVectorSet(1, 1, 1, 1);
 }
 const DX::StepTimer* RenderObject::m_timer ;
+
 void RenderObject::Update()
 {
 	for (auto p : childs)
@@ -17,11 +17,14 @@ void RenderObject::Update()
 	OnUpdate();
 }
 
+Transform& RenderObject::GetTransform()
+{
+	return m_transform;
+}
+
 void RenderObject::Render(const XMMATRIX& parentModel)
 {
-	XMFLOAT3 scale; 
-	XMStoreFloat3(&scale, m_scale);
-	XMMATRIX model =XMMatrixScaling(scale.x,scale.y,scale.z)* m_rotation *XMMatrixTranslationFromVector(m_position)* parentModel;
+	XMMATRIX model = m_transform.GetModelMatrix() * parentModel;
 	for (auto p : childs)
 	{
 		p->Render(model);
@@ -139,36 +142,11 @@ void RenderObject::CreateResources(const std::shared_ptr<DX::DeviceResources>& d
 	CreateState();
 }
 
-DirectX::XMVECTOR RenderObject::getPosition() { return m_position; }
-void RenderObject::setPosition(XMVECTOR pos) { m_position = pos; }
-void RenderObject::setScale(DirectX::XMVECTOR scale) { m_scale = scale; }
-void RenderObject::setRotation(XMMATRIX rotation) { m_rotation = rotation; }
-void RenderObject::Rotate(XMMATRIX trans)
+void RenderObject::addChild(std::shared_ptr<RenderObject> child)
 {
-	m_rotation = m_rotation * trans;
+	childs.push_back(child);
 }
 
-DirectX::XMVECTOR RenderObject::Forward()
-{
-
-	XMVECTOR origin = XMVectorSet(0, 0, 1, 1);
-	
-	return XMVector4Transform(origin, m_rotation);
-}
-DirectX::XMVECTOR RenderObject::Right()
-{
-
-	XMVECTOR origin = XMVectorSet(1, 0,0 , 1);
-
-	return XMVector4Transform(origin, m_rotation);
-}
-DirectX::XMVECTOR RenderObject::Up()
-{
-
-	XMVECTOR origin = XMVectorSet(0, 1, 0, 1);
-
-	return XMVector4Transform(origin, m_rotation);
-}
 void RenderObject::ReleaseDeviceDependentResources()
 {
 	m_inputLayout.Reset();
@@ -176,31 +154,35 @@ void RenderObject::ReleaseDeviceDependentResources()
 	m_vertexBuffer.Reset();
 	m_indexBuffer.Reset();
 }
-void RenderObject::addChild(std::shared_ptr<RenderObject> child)
+std::shared_ptr<D3D11_DEPTH_STENCIL_DESC> RenderObject::getDepthDesc()
 {
-	childs.push_back(child);
+	std::shared_ptr<D3D11_DEPTH_STENCIL_DESC> depthDesc = std::make_shared<D3D11_DEPTH_STENCIL_DESC>();
+	depthDesc->DepthEnable = true;
+	depthDesc->DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	depthDesc->DepthFunc = D3D11_COMPARISON_LESS;
+	return depthDesc;
 }
+
+std::shared_ptr< D3D11_RASTERIZER_DESC> RenderObject::getRasterizerDesc()
+{
+	std::shared_ptr<D3D11_RASTERIZER_DESC> rasterizerDesc = std::make_shared<D3D11_RASTERIZER_DESC>();
+	ZeroMemory(rasterizerDesc.get(), sizeof(*rasterizerDesc));
+	rasterizerDesc->FillMode = D3D11_FILL_SOLID;
+	rasterizerDesc->CullMode = D3D11_CULL_BACK;
+	rasterizerDesc->FrontCounterClockwise = true;
+	rasterizerDesc->DepthClipEnable = true;
+	return rasterizerDesc;
+}
+
 void RenderObject::CreateState(){
 
-
-	D3D11_DEPTH_STENCIL_DESC depthDesc;
-	depthDesc.DepthEnable = true;
-	depthDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-	depthDesc.DepthFunc = D3D11_COMPARISON_LESS;
-
+	std::shared_ptr<D3D11_DEPTH_STENCIL_DESC> depthDesc = getDepthDesc();
 
 	ID3D11Device* device = m_deviceResources->GetD3DDevice();
-	device->CreateDepthStencilState(&depthDesc, m_depthStencilState.GetAddressOf());
+	device->CreateDepthStencilState(depthDesc.get(), m_depthStencilState.GetAddressOf());
 
-
-	D3D11_RASTERIZER_DESC rasterizerDesc;
-	ZeroMemory(&rasterizerDesc, sizeof(rasterizerDesc));
-	rasterizerDesc.FillMode = D3D11_FILL_SOLID;
-	rasterizerDesc.CullMode = D3D11_CULL_BACK;
-	rasterizerDesc.FrontCounterClockwise = true;
-	rasterizerDesc.DepthClipEnable = true;
-
-	device->CreateRasterizerState(&rasterizerDesc, m_rasterizerState.GetAddressOf());
+	std::shared_ptr< D3D11_RASTERIZER_DESC> rasterizerDesc = getRasterizerDesc();
+	device->CreateRasterizerState(rasterizerDesc.get(), m_rasterizerState.GetAddressOf());
 
 }
 void RenderObject::SetState()

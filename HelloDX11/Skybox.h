@@ -1,7 +1,6 @@
 #pragma once
 #include"Camera.h"
 #include"RenderObject.h"
-#include"Camera.h"
 namespace HelloDX11
 {
 	class Skybox:public RenderObject
@@ -10,8 +9,8 @@ namespace HelloDX11
 		void SetFollow(Camera* cam);
 	protected:
 		Geometry::MeshData<geoVPC> CreateMesh() override;
-		void CreateState() override;
-		void SetState() override;
+		virtual std::shared_ptr<D3D11_DEPTH_STENCIL_DESC> getDepthDesc() override;
+		virtual std::shared_ptr<D3D11_RASTERIZER_DESC> getRasterizerDesc() override;
 	private:
 		Camera* camera;
 		DirectX::XMMATRIX cam_pos;

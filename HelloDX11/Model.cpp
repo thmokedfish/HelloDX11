@@ -6,12 +6,28 @@
 #include <vector>
 #include "model.h"
 using namespace HelloDX11;
-Model::Model(const char* filename) : verts_(), faces_()
+Model::Model(const char* filename) : verts_(), faces_(), normals_(), uvs_()
 //, normalmap_() 
+{
+}
+/*
+void Model::load_texture(std::string filename, const char* suffix, TGAImage& img) {
+	std::string texfile(filename);
+	size_t dot = texfile.find_last_of(".");
+	if (dot != std::string::npos) {
+		texfile = texfile.substr(0, dot) + std::string(suffix);
+		img.flip_vertically();
+	}
+}*/
+
+Model::~Model() {
+}
+
+bool Model::LoadFromFile(const char* filename)
 {
 	std::ifstream in;
 	in.open(filename, std::ifstream::in);
-	if (in.fail()) return;
+	if (in.fail()) return false;
 	std::string line;
 	while (!in.eof()) {
 		std::getline(in, line);
@@ -60,18 +76,6 @@ Model::Model(const char* filename) : verts_(), faces_()
 	}
 	//load_texture(filename, "_nm.tga", normalmap_);
 }
-/*
-void Model::load_texture(std::string filename, const char* suffix, TGAImage& img) {
-	std::string texfile(filename);
-	size_t dot = texfile.find_last_of(".");
-	if (dot != std::string::npos) {
-		texfile = texfile.substr(0, dot) + std::string(suffix);
-		img.flip_vertically();
-	}
-}*/
-
-Model::~Model() {
-}
 
 int Model::nverts() {
 	return (int)verts_.size();
@@ -94,7 +98,7 @@ DirectX::XMFLOAT3 Model::vert(int iface, int nthvert)
 {
 	return this->verts_[face(iface)[nthvert].x];
 }
-/*
+
 DirectX::XMFLOAT2 Model::uv(int i)
 {
 	return uvs_[i];
@@ -105,6 +109,7 @@ DirectX::XMFLOAT2 Model::uv(int iface, int nthvert)
 	return this->uvs_[face(iface)[nthvert].y];
 }
 
+/*
 DirectX::XMFLOAT3 Model::normal(DirectX::XMFLOAT2 uvf) {
 	DirectX::XMINT2 uv(uvf[0] * normalmap_.get_width(), uvf[1] * normalmap_.get_height());
 	TGAColor c = normalmap_.get(uv[0], uv[1]);
@@ -112,7 +117,7 @@ DirectX::XMFLOAT3 Model::normal(DirectX::XMFLOAT2 uvf) {
 	for (int i = 0; i < 3; i++)
 		res[2 - i] = (float)c[i] / 255.f * 2.f - 1.f;
 	return res;
-}
+}*/
 
 DirectX::XMFLOAT3 Model::normal(int i)
 {
@@ -121,5 +126,8 @@ DirectX::XMFLOAT3 Model::normal(int i)
 
 DirectX::XMFLOAT3 Model::normal(int iface, int nthvert)
 {
-	return this->normals_[face(iface)[nthvert].x].normalize();
-}*/
+	DirectX::XMFLOAT3* n = &this->normals_[face(iface)[nthvert].x];
+	DirectX::XMVECTOR v = DirectX::XMVector3Normalize(DirectX::XMLoadFloat3(n));
+	DirectX::XMStoreFloat3(n, v);
+	return *n;
+}

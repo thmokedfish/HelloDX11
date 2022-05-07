@@ -5,6 +5,8 @@
 #include "Car.h"
 #include"Ground.h"
 #include"Skybox.h"
+#include"Terrain/HeightmapSampling.h"
+#include"consts/consts.h"
 using namespace HelloDX11;
 
 using namespace DirectX;
@@ -67,6 +69,7 @@ void Sample3DSceneRenderer::Update(DX::StepTimer const& timer)
 	RenderObject::m_timer = &timer;
 	root->Update();
 	camera.OnUpdate(); 
+	// view martix form camera
 	XMStoreFloat4x4(&m_constantBufferData.view, XMMatrixTranspose(camera.LookAt()));
 }
 
@@ -168,23 +171,30 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 	});
 
 	auto createResourcesTask = (createPSTask && createVSTask).then([this] () {
-		root = std::make_shared<Ground>();
-		std::shared_ptr<RenderObject> car = std::make_shared<Car>();
-		car->setPosition(XMVectorSet(0, 0.18f, 0, 1));
-		std::shared_ptr<RenderObject> sky = std::make_shared<Skybox>();
-		Skybox* p = (Skybox*)sky.get();
-		p->SetFollow(&camera);
-		root->addChild(car);
-		root->addChild(sky);
-		camera.SetFollow(car.get());
-		root->CreateResources(m_deviceResources);
-
+		InitObjects();
 		//skyRenderer.Init(device);
 	});
 
 	createResourcesTask.then([this] () {
 		m_loadingComplete = true;
 	});
+}
+
+void Sample3DSceneRenderer::InitObjects()
+{
+	//HeightmapSampling sampler;
+	//sampler.LoadHeightmap(PathConsts::AssetPath +"height.raw");
+	root = std::make_shared<Ground>();
+	std::shared_ptr<RenderObject> car = std::make_shared<Car>();
+	car->GetTransform().setPosition(XMVectorSet(0, 0.18f, 0, 1));
+	std::shared_ptr<RenderObject> sky = std::make_shared<Skybox>();
+	Skybox* p = (Skybox*)sky.get();
+	p->SetFollow(&camera);
+	root->addChild(car);
+	root->addChild(sky);
+	camera.SetFollow(car.get());
+	root->CreateResources(m_deviceResources);
+
 }
 
 void Sample3DSceneRenderer::ReleaseDeviceDependentResources()

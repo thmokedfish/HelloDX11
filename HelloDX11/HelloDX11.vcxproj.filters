@@ -71,6 +71,12 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{69900d00-0d97-4e89-9938-d492072adda1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="内容\Terrain">
+      <UniqueIdentifier>{6800e6a3-3add-4599-819d-6dabd8ed9bc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="通用\consts">
+      <UniqueIdentifier>{f05c1d00-93d6-4981-b412-2722552f87e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
@@ -104,6 +110,15 @@
       <Filter>内容\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Skybox.cpp" />
+    <ClCompile Include="Content\Terrain\HeightmapSampling.cpp">
+      <Filter>内容\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="Content\Terrain\TerrainObject.cpp">
+      <Filter>内容\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Transform.cpp">
+      <Filter>通用\框架</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -137,6 +152,18 @@
       <Filter>内容\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Skybox.h" />
+    <ClInclude Include="Content\Terrain\HeightmapSampling.h">
+      <Filter>内容\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="consts\consts.h">
+      <Filter>通用\consts</Filter>
+    </ClInclude>
+    <ClInclude Include="Content\Terrain\TerrainObject.h">
+      <Filter>内容\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Transfrom.h">
+      <Filter>通用\框架</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\StoreLogo.png">

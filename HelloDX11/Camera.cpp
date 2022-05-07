@@ -28,7 +28,7 @@ void Camera::OnUpdate()
 		at = atV + eyeorigin;
 
 
-		XMVECTOR cardiff = following->getPosition() - carorigin;
+		XMVECTOR cardiff = XMLoadFloat3(&following->GetTransform().getPosition()) - carorigin;
 
 		eye = eyeorigin + cardiff;
 		at += cardiff;
@@ -39,7 +39,7 @@ void Camera::OnUpdate()
 void Camera::SetFollow(RenderObject* following)
 {
 	this->following = following;
-	carorigin=following->getPosition();
+	carorigin = XMLoadFloat3(&following->GetTransform().getPosition());
 	
 	//eyediff = eye - pos;
 	//atdiff = at -pos;

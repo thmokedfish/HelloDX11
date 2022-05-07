@@ -20,7 +20,7 @@ namespace HelloDX11
 		void Update(DX::StepTimer const& timer);
 		void Render();
 		bool IsTracking() { return m_tracking; }
-
+		void InitObjects();
 
 
 	private:

@@ -19,6 +19,7 @@ namespace HelloDX11
 		int nverts();
 		int nfaces();
 		int nvts();
+		bool LoadFromFile(const char* filename);
 		DirectX::XMFLOAT3 vert(int i);
 		DirectX::XMFLOAT3 vert(int iface, int nthvert);
 		DirectX::XMFLOAT2 uv(int i);

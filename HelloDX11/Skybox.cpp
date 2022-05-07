@@ -28,32 +28,20 @@ Geometry::MeshData<geoVPC> Skybox::CreateMesh()
 
 void Skybox::OnUpdate()
 {
-	m_position = camera->getPosition();
+	m_transform.setPosition(camera->getPosition());
 }
-void Skybox::CreateState()
+
+std::shared_ptr<D3D11_DEPTH_STENCIL_DESC> Skybox::getDepthDesc()
 {
-	D3D11_DEPTH_STENCIL_DESC depthDesc;
-	depthDesc.DepthEnable = true;
-	depthDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-	depthDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
-
-
-	ID3D11Device* device = m_deviceResources->GetD3DDevice();
-	device->CreateDepthStencilState(&depthDesc, m_depthStencilState.GetAddressOf());
-
-
-	D3D11_RASTERIZER_DESC rasterizerDesc;
-	ZeroMemory(&rasterizerDesc, sizeof(rasterizerDesc));
-	rasterizerDesc.FillMode = D3D11_FILL_SOLID;
-	rasterizerDesc.CullMode = D3D11_CULL_BACK;
-	rasterizerDesc.FrontCounterClockwise =false;
-	rasterizerDesc.DepthClipEnable = true;
-
-	device->CreateRasterizerState(&rasterizerDesc, m_rasterizerState.GetAddressOf());
+	std::shared_ptr<D3D11_DEPTH_STENCIL_DESC> depthDesc = RenderObject::getDepthDesc(); 
+	depthDesc->DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+	return depthDesc;
 }
-void Skybox::SetState()
+
+
+std::shared_ptr< D3D11_RASTERIZER_DESC> Skybox::getRasterizerDesc()
 {
-	auto context = m_deviceResources->GetD3DDeviceContext();
-	context->RSSetState(m_rasterizerState.Get());
-	context->OMSetDepthStencilState(m_depthStencilState.Get(), 0);
+	std::shared_ptr< D3D11_RASTERIZER_DESC> desc = RenderObject::getRasterizerDesc();
+	desc->FrontCounterClockwise = false;
+	return desc;
 }
