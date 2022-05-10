@@ -11,7 +11,7 @@ Car::Car():RenderObject(),m_speed(0),m_wheelrotation(0),maxspeed(4),maxav(1.5f),
 	for (int i = 0; i < 4; ++i)
 	{
 		std::shared_ptr<RenderObject> w = std::make_shared<Wheel>();
-		childs.push_back(w);
+		this->addChild(w);
 		childs[i]->GetTransform().setScale(XMVectorSet(0.3f, 0.3f, 0.3f, 1));
 		childs[i]->GetTransform().setRotation(XMMatrixRotationZ(-XM_PIDIV2));
 	}
@@ -89,23 +89,19 @@ void Car::Turn()
 	childs[1]->GetTransform().Rotate(XMMatrixRotationY(radians));
 
 }
-Geometry::MeshData<geoVPC> Car::CreateMesh()
+
+void Car::OnCreateResource()
 {
 	Geometry::MeshData<geoVPC> mesh = Geometry::CreateBox<geoVPC>(0.3f, 0.15f, 0.4f, { 0.5f,0.5f,1,1 });
 	//for (int i = 0; i < mesh.vertexVec.size(); i += 3)
 	{
-	//	mesh.vertexVec[i].color = { 1,1,1,1 };
+		//	mesh.vertexVec[i].color = { 1,1,1,1 };
 	}
-	return mesh;
+	CreateResourceWithVertexData(mesh);
 }
-//double hellotime = 0;
+
 void Car::OnUpdate()
 {
-	//float degreesPerSecond = 45;
-	//float radiansPerSecond = XMConvertToRadians(degreesPerSecond);
-	//double totalRotation = m_timer->GetElapsedSeconds() * radiansPerSecond;
-	//float radians = static_cast<float>(fmod(totalRotation, XM_2PI));
-	//Rotate(XMMatrixRotationY(radians));
 	if (InputManager::GetKey(VirtualKey::W))
 	{
 		carstate = MoveState::FORWARD;

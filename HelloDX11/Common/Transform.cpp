@@ -7,10 +7,6 @@ using namespace DirectX;
 Transform::Transform():m_position(), m_rotation(XMFLOAT4X4()), m_scale(XMFLOAT3(1,1,1))
 {
 	XMStoreFloat4x4(&m_rotation, XMMatrixIdentity());
-	float _11 = m_rotation._11;
-	float _12 = m_rotation._12;
-	float _13 = m_rotation._13;
-	float _14 = m_rotation._14;
 }
 Transform::Transform(const Transform& cpy)
 {

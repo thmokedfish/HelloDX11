@@ -27,7 +27,8 @@ namespace HelloDX11
 		WheelState wheelstate;
 		void Move();
 		void Turn();
-		Geometry::MeshData<geoVPC> CreateMesh() override;
+		//Geometry::MeshData<geoVPC> GetMesh() override;
+		void OnCreateResource() override;
 	public:
 		Car();
 		void OnUpdate() override;

@@ -182,8 +182,8 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 
 void Sample3DSceneRenderer::InitObjects()
 {
-	//HeightmapSampling sampler;
-	//sampler.LoadHeightmap(PathConsts::AssetPath +"height.raw");
+	HeightmapSampling sampler;
+	sampler.LoadHeightmapTGA("/test.txt");//PathConsts::AssetPath +"StoreLogo.scale-200.png");
 	root = std::make_shared<Ground>();
 	std::shared_ptr<RenderObject> car = std::make_shared<Car>();
 	car->GetTransform().setPosition(XMVectorSet(0, 0.18f, 0, 1));
@@ -200,10 +200,9 @@ void Sample3DSceneRenderer::InitObjects()
 void Sample3DSceneRenderer::ReleaseDeviceDependentResources()
 {
 	m_loadingComplete = false;
+	root->ReleaseDeviceDependentResources();
 	m_vertexShader.Reset();
-	m_inputLayout.Reset();
 	m_pixelShader.Reset();
 	m_constantBuffer.Reset();
-	m_vertexBuffer.Reset();
 	m_indexBuffer.Reset();
 }

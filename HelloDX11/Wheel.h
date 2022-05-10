@@ -5,7 +5,7 @@ namespace HelloDX11
 	class Wheel : public RenderObject
 	{
 	protected:
-		Geometry::MeshData<geoVPC> CreateMesh() override;
+		void OnCreateResource() override;
 	public:
 		void OnUpdate() override;
 	};

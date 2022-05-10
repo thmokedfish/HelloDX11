@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "RenderObject.h"
-#include <Common/DirectXHelper.h>
 using namespace HelloDX11;
 using namespace DirectX;
 RenderObject::RenderObject():m_transform()
@@ -99,48 +98,9 @@ void RenderObject::CreateResources(const std::shared_ptr<DX::DeviceResources>& d
 			&m_modelBuffer
 		)
 	);
-	m_mesh = CreateMesh();
-	std::vector<geoVPC> v = m_mesh.vertexVec;
-	int vsize = v.size();
-	static geoVPC* vertices = new geoVPC[vsize];
-	std::copy(v.begin(), v.end(), vertices);
-
-	D3D11_SUBRESOURCE_DATA vertexBufferData = { 0 };
-	vertexBufferData.pSysMem = vertices;
-	vertexBufferData.SysMemPitch = 0;
-	vertexBufferData.SysMemSlicePitch = 0;
-	CD3D11_BUFFER_DESC vertexBufferDesc(sizeof(geoVPC) * vsize, D3D11_BIND_VERTEX_BUFFER);
-	DX::ThrowIfFailed(
-		m_deviceResources->GetD3DDevice()->CreateBuffer(
-			&vertexBufferDesc,
-			&vertexBufferData,
-			&m_vertexBuffer
-		)
-	);
-
-
-
-	int indexSize = m_mesh.indexVec.size();
-	//unsigned short a[10];
-	static unsigned short* meshIndices = new unsigned short[indexSize];
-	std::copy(m_mesh.indexVec.begin(), m_mesh.indexVec.end(), meshIndices);
-	//m_indexCount = ARRAYSIZE(meshIndices);
-	m_indexCount = m_mesh.indexVec.size();
-
-	D3D11_SUBRESOURCE_DATA indexBufferData = { 0 };
-	indexBufferData.pSysMem = meshIndices;
-	indexBufferData.SysMemPitch = 0;
-	indexBufferData.SysMemSlicePitch = 0;
-	CD3D11_BUFFER_DESC indexBufferDesc(sizeof(unsigned short) * m_indexCount, D3D11_BIND_INDEX_BUFFER);
-	DX::ThrowIfFailed(
-		m_deviceResources->GetD3DDevice()->CreateBuffer(
-			&indexBufferDesc,
-			&indexBufferData,
-			&m_indexBuffer
-		)
-	);
-	CreateState();
+	OnCreateResource();
 }
+
 
 void RenderObject::addChild(std::shared_ptr<RenderObject> child)
 {
@@ -153,6 +113,10 @@ void RenderObject::ReleaseDeviceDependentResources()
 	m_modelBuffer.Reset();
 	m_vertexBuffer.Reset();
 	m_indexBuffer.Reset();
+	for (auto p : childs)
+	{
+		p->ReleaseDeviceDependentResources();
+	}
 }
 std::shared_ptr<D3D11_DEPTH_STENCIL_DESC> RenderObject::getDepthDesc()
 {

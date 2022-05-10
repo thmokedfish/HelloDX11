@@ -223,7 +223,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir);$(IntermediateOutputPath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/bigobj /Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
-      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard_C>Default</LanguageStandard_C>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -245,12 +245,17 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Image Include="Assets\LargeTile.scale-200.png" />
     <Image Include="Assets\LockScreenLogo.scale-200.png" />
+    <Image Include="Assets\SmallTile.scale-200.png" />
     <Image Include="Assets\SplashScreen.scale-200.png" />
     <Image Include="Assets\Square150x150Logo.scale-200.png" />
+    <Image Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-48.png" />
+    <Image Include="Assets\Square44x44Logo.altform-unplated_targetsize-48.png" />
     <Image Include="Assets\Square44x44Logo.scale-200.png" />
     <Image Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
-    <Image Include="Assets\StoreLogo.png" />
+    <Image Include="Assets\Square44x44Logo.targetsize-48.png" />
+    <Image Include="Assets\StoreLogo.scale-200.png" />
     <Image Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
@@ -258,6 +263,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Common\DeviceResources.h" />
     <ClInclude Include="Car.h" />
+    <ClInclude Include="Common\Tools\tgaimage.h" />
     <ClInclude Include="Common\Transfrom.h" />
     <ClInclude Include="consts\consts.h" />
     <ClInclude Include="Content\Terrain\HeightmapSampling.h" />
@@ -283,6 +289,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Common\DeviceResources.cpp" />
     <ClCompile Include="Car.cpp" />
+    <ClCompile Include="Common\Tools\tgaimage.cpp" />
     <ClCompile Include="Common\Transform.cpp" />
     <ClCompile Include="Content\Terrain\HeightmapSampling.cpp" />
     <ClCompile Include="Content\Terrain\TerrainObject.cpp" />

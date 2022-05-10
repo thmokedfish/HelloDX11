@@ -7,7 +7,7 @@ void Skybox::SetFollow(Camera* cam)
 	camera = cam;
 }
 
-Geometry::MeshData<geoVPC> Skybox::CreateMesh()
+void Skybox::OnCreateResource()
 {
 	Geometry::MeshData<geoVPC> mesh = Geometry::CreateBox<geoVPC>(50, 50, 50, {1,1,1,1 });
 	DirectX::XMFLOAT4 topColor = { 0.2f,0.2f,1,1 };
@@ -23,7 +23,7 @@ Geometry::MeshData<geoVPC> Skybox::CreateMesh()
 	mesh.vertexVec[18].color = topColor;
 	mesh.vertexVec[21].color = topColor;
 	mesh.vertexVec[22].color = topColor;
-	return mesh;
+	CreateResourceWithVertexData(mesh);
 }
 
 void Skybox::OnUpdate()

@@ -77,6 +77,12 @@
     <Filter Include="通用\consts">
       <UniqueIdentifier>{f05c1d00-93d6-4981-b412-2722552f87e3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="通用\Tools">
+      <UniqueIdentifier>{97d718f1-9cc6-43ed-ab28-29749429600f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{47a3671d-f365-49ce-96a0-be797d2029c0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
@@ -118,6 +124,9 @@
     </ClCompile>
     <ClCompile Include="Common\Transform.cpp">
       <Filter>通用\框架</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Tools\tgaimage.cpp">
+      <Filter>通用\Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -164,11 +173,9 @@
     <ClInclude Include="Common\Transfrom.h">
       <Filter>通用\框架</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Assets\StoreLogo.png">
-      <Filter>资产</Filter>
-    </Image>
+    <ClInclude Include="Common\Tools\tgaimage.h">
+      <Filter>通用\Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
@@ -188,5 +195,25 @@
     <FxCompile Include="Shaders\TexPosVertexShader.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\SmallTile.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\LargeTile.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.targetsize-48.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.altform-unplated_targetsize-48.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-48.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\StoreLogo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
   </ItemGroup>
 </Project>

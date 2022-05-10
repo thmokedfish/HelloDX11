@@ -47,7 +47,8 @@ namespace Geometry
             }
         }
     }
-    struct VertexPosNormalTex
+
+    struct VertexPosNormalTex 
     {
         DirectX::XMFLOAT3 pos;
         DirectX::XMFLOAT3 normal;

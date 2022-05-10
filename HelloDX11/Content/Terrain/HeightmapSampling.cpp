@@ -1,13 +1,43 @@
 // load heightmaps and sampling
 #include "pch.h"
-#include<fstream>
+#include <fstream>
 #include <filesystem>
-#include<iostream>
+#include <iostream>
+#include <cerrno>
+#include <debugapi.h>
 #include "HeightmapSampling.h"
 using namespace HelloDX11;
 
+std::shared_ptr<TGAImage> HeightmapSampling::LoadHeightmapTGA(std::string filename)
+{
+	std::shared_ptr<TGAImage> image = std::make_shared<TGAImage>(225,225,TGAImage::GRAYSCALE);
+	//image->read_tga_file(filename.c_str());
+	std::ifstream in;
+	try
+	{
+		auto platformPath = Windows::Storage::ApplicationData::Current->RoamingFolder->Path;
+		std::wstring platformPathW(platformPath->Begin());
+		std::string convertedPlatformPath(platformPathW.begin(), platformPathW.end());
+		filename = convertedPlatformPath + filename;
+		char* res = strerror(errno);
+		in.open(filename, std::ios::binary|std::ifstream::in); 
+		res = strerror(errno);
+		if (!in)
+			throw std::system_error(errno, std::system_category(), "failed to open file");
+	}
+	catch (const std::exception& e)
+	{
+		std::filesystem::path cwd = std::filesystem::current_path();
+		std::cout << cwd.string() << std::endl;
+		const char* ee = e.what();
+		char* res = strerror(errno);
+		std::cout << e.what() << std::endl;
 
-std::vector<float> HeightmapSampling::LoadHeightmap(std::string filename)
+	}
+	return image;
+}
+
+std::vector<float> HeightmapSampling::LoadHeightmapRAW(std::string filename)
 {
 	std::vector<float> heightInfos;
 	std::ifstream inFile;

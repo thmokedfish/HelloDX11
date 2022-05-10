@@ -6,3 +6,10 @@ TerrainObject::TerrainObject() :RenderObject()
 {
 
 }
+void TerrainObject::OnCreateResource()
+{
+
+}
+//Geometry::MeshData<geoVPC> TerrainObject::GetMesh()
+//{
+//}

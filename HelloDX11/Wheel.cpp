@@ -9,7 +9,8 @@ void Wheel::OnUpdate()
 	//if input a/d
 	//wheel rotate y
 }
-Geometry::MeshData<geoVPC> Wheel::CreateMesh()
+
+void Wheel::OnCreateResource()
 {
 	Geometry::MeshData<geoVPC> mesh= Geometry::CreateCylinder<geoVPC>(0.2f, 0.1f, 16, 3, 0, 0 );
 	XMFLOAT4 color = { (1.0f), (0.5f), (0.5f), (1.0f) };
@@ -17,5 +18,5 @@ Geometry::MeshData<geoVPC> Wheel::CreateMesh()
 	{
 		mesh.vertexVec[i].color = color;
 	}
-	return mesh;
+	CreateResourceWithVertexData(mesh);
 }

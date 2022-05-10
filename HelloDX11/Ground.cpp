@@ -3,7 +3,8 @@
 using namespace HelloDX11;
 using namespace DirectX;
 using namespace Geometry;
-Geometry::MeshData<geoVPC> Ground::CreateMesh()
+
+void Ground::OnCreateResource()
 {
     float width = 5; float height = 0.1f; float depth = 5;
     XMFLOAT4 white = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -28,7 +29,7 @@ Geometry::MeshData<geoVPC> Ground::CreateMesh()
         0, 1, 2, 2, 3, 0,       
     };
 
-    return meshData;
+    CreateResourceWithVertexData(meshData);
 }
 
 void Ground::OnUpdate()
