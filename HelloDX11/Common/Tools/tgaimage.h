@@ -78,7 +78,7 @@ public:
     TGAImage();
     TGAImage(int w, int h, int bpp);
     TGAImage(const TGAImage& img);
-    bool read_tga_file(const char* filename);
+    bool read_tga_file(std::string filename);
     bool write_tga_file(const char* filename, bool rle = true);
     bool flip_horizontally();
     bool flip_vertically();

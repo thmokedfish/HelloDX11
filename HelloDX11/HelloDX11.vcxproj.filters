@@ -128,6 +128,9 @@
     <ClCompile Include="Common\Tools\tgaimage.cpp">
       <Filter>通用\Tools</Filter>
     </ClCompile>
+    <ClCompile Include="Common\Object.cpp">
+      <Filter>通用\框架</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -175,6 +178,9 @@
     </ClInclude>
     <ClInclude Include="Common\Tools\tgaimage.h">
       <Filter>通用\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Object.h">
+      <Filter>通用\框架</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

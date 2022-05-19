@@ -5,25 +5,25 @@
 using namespace HelloDX11;
 using namespace DirectX;
 using namespace Windows::System;
-Car::Car():RenderObject(),m_speed(0),m_wheelrotation(0),maxspeed(4),maxav(1.5f),ac(0.05f)
+Car::Car():RenderObject(),m_speed(0),m_wheelrotation(0),maxspeed(80),maxav(15.0f),ac(0.5f)
 {
-	m_transform.setRotation(XMMatrixRotationY(XM_PIDIV2));
+	m_transform->setRotation(XMMatrixRotationY(XM_PIDIV2));
 	for (int i = 0; i < 4; ++i)
 	{
 		std::shared_ptr<RenderObject> w = std::make_shared<Wheel>();
 		this->addChild(w);
-		childs[i]->GetTransform().setScale(XMVectorSet(0.3f, 0.3f, 0.3f, 1));
-		childs[i]->GetTransform().setRotation(XMMatrixRotationZ(-XM_PIDIV2));
+		childs[i]->GetTransform()->setScale(XMVectorSet(0.3f, 0.3f, 0.3f, 1));
+		childs[i]->GetTransform()->setRotation(XMMatrixRotationZ(-XM_PIDIV2));
 	}
 	float diffx = 0.17f; float diffy = -0.05f;float diffz= 0.15f;
 	//设定轮子位置
-	childs[0]->GetTransform().setPosition(XMVectorSet(diffx,diffy,diffz,1));
+	childs[0]->GetTransform()->setPosition(XMVectorSet(diffx,diffy,diffz,1));
 
-	childs[1]->GetTransform().setPosition(XMVectorSet(-diffx, diffy, diffz, 1));
+	childs[1]->GetTransform()->setPosition(XMVectorSet(-diffx, diffy, diffz, 1));
 
-	childs[2]->GetTransform().setPosition(XMVectorSet(diffx, diffy, -diffz, 1));
+	childs[2]->GetTransform()->setPosition(XMVectorSet(diffx, diffy, -diffz, 1));
 
-	childs[3]->GetTransform().setPosition(XMVectorSet(-diffx, diffy, -diffz, 1));
+	childs[3]->GetTransform()->setPosition(XMVectorSet(-diffx, diffy, -diffz, 1));
 }
 void Car::Move()
 {
@@ -49,11 +49,11 @@ void Car::Move()
 	float av = m_speed * maxav / maxspeed;
 	//小车旋转
 	//wheelrotation范围(-45,45)，wheelrotation/45以映射到(-1,1)
-	m_transform.Rotate(XMMatrixRotationY(av * m_wheelrotation / 45));
+	m_transform->Rotate(XMMatrixRotationY(av * m_wheelrotation / 45));
 	//位移
-	XMVECTOR pos = XMLoadFloat3(&m_transform.getPosition());
-	XMVECTOR res = pos + m_speed * 0.002f * m_transform.Forward();
-	m_transform.setPosition(res);
+	XMVECTOR pos = m_transform->getPosition();
+	XMVECTOR res = pos + m_speed * 0.002f * m_transform->Forward();
+	m_transform->setPosition(res);
 	//轮子旋转
 	for (auto w : childs)
 	{
@@ -61,7 +61,7 @@ void Car::Move()
 		float radiansPerSecond = XMConvertToRadians(degreesPerSecond);
 		double frameRotation = m_timer->GetElapsedSeconds() * radiansPerSecond;
 		float radians = static_cast<float>(fmod(frameRotation, XM_2PI));
-		w->GetTransform().Rotate(XMMatrixRotationAxis(w->GetTransform().Up(),radians));
+		w->GetTransform()->Rotate(XMMatrixRotationAxis(w->GetTransform()->Up(),radians));
 	}
 }
 void Car::Turn()
@@ -85,8 +85,8 @@ void Car::Turn()
 		m_wheelrotation -= radians;
 		return;
 	}
-	childs[0]->GetTransform().Rotate(XMMatrixRotationY(radians));
-	childs[1]->GetTransform().Rotate(XMMatrixRotationY(radians));
+	childs[0]->GetTransform()->Rotate(XMMatrixRotationY(radians));
+	childs[1]->GetTransform()->Rotate(XMMatrixRotationY(radians));
 
 }
 
@@ -97,7 +97,7 @@ void Car::OnCreateResource()
 	{
 		//	mesh.vertexVec[i].color = { 1,1,1,1 };
 	}
-	CreateResourceWithVertexData(mesh);
+	this->CreateResourceWithVertexData(mesh);
 }
 
 void Car::OnUpdate()

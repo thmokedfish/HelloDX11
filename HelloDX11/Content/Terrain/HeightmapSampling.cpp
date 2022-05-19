@@ -6,36 +6,23 @@
 #include <cerrno>
 #include <debugapi.h>
 #include "HeightmapSampling.h"
+using namespace Geometry;
 using namespace HelloDX11;
 
 std::shared_ptr<TGAImage> HeightmapSampling::LoadHeightmapTGA(std::string filename)
 {
 	std::shared_ptr<TGAImage> image = std::make_shared<TGAImage>(225,225,TGAImage::GRAYSCALE);
-	//image->read_tga_file(filename.c_str());
-	std::ifstream in;
-	try
-	{
-		auto platformPath = Windows::Storage::ApplicationData::Current->RoamingFolder->Path;
-		std::wstring platformPathW(platformPath->Begin());
-		std::string convertedPlatformPath(platformPathW.begin(), platformPathW.end());
-		filename = convertedPlatformPath + filename;
-		char* res = strerror(errno);
-		in.open(filename, std::ios::binary|std::ifstream::in); 
-		res = strerror(errno);
-		if (!in)
-			throw std::system_error(errno, std::system_category(), "failed to open file");
-	}
-	catch (const std::exception& e)
-	{
-		std::filesystem::path cwd = std::filesystem::current_path();
-		std::cout << cwd.string() << std::endl;
-		const char* ee = e.what();
-		char* res = strerror(errno);
-		std::cout << e.what() << std::endl;
-
-	}
+	image->read_tga_file(filename);
+	TGAColor c = image->get(0, 0);
 	return image;
 }
+
+//Model HeightmapSampling::Sample(std::vector<float> heightInfos, int layer)  // 需要生成顶点法线等
+//{
+//	return NULL;
+//}
+
+
 
 std::vector<float> HeightmapSampling::LoadHeightmapRAW(std::string filename)
 {
@@ -44,7 +31,7 @@ std::vector<float> HeightmapSampling::LoadHeightmapRAW(std::string filename)
 	//二进制方式打开文件
 	try
 	{
-		inFile.open(filename.c_str(), std::ios::binary); 
+		inFile.open(filename.c_str(), std::ios::binary);
 		if (!inFile)
 			throw std::system_error(errno, std::system_category(), "failed to open " + filename);
 	}
@@ -75,11 +62,3 @@ std::vector<float> HeightmapSampling::LoadHeightmapRAW(std::string filename)
 
 	return heightInfos;
 }
-//Model HeightmapSampling::Sample(std::vector<float> heightInfos, int layer)  // 需要生成顶点法线、uv等
-//{
-//	return NULL;
-//}
-//Model HeightmapSampling::LoadAndSample(std::string filename, int layer)
-//{
-//	return NULL;
-//}

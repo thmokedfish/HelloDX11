@@ -11,7 +11,7 @@ void Ground::OnCreateResource()
     XMFLOAT4 blue = { 0.5f,0.5f,1.0f,1.0f };
     XMFLOAT4 red = { 1,0.5f,0.5f,1.0f };
     XMFLOAT4 black = { 0,0,0,1 };
-    MeshData<VertexPosColor, DWORD> meshData;
+    MeshData<VertexPosColor, UINT> meshData;
     meshData.vertexVec.resize(4);
 
     float w2 = width / 2, h2 = height / 2, d2 = depth / 2;
@@ -29,7 +29,7 @@ void Ground::OnCreateResource()
         0, 1, 2, 2, 3, 0,       
     };
 
-    CreateResourceWithVertexData(meshData);
+    this->CreateResourceWithVertexData(meshData);
 }
 
 void Ground::OnUpdate()

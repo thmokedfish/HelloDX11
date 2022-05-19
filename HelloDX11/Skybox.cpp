@@ -23,12 +23,12 @@ void Skybox::OnCreateResource()
 	mesh.vertexVec[18].color = topColor;
 	mesh.vertexVec[21].color = topColor;
 	mesh.vertexVec[22].color = topColor;
-	CreateResourceWithVertexData(mesh);
+	this->CreateResourceWithVertexData(mesh);
 }
 
 void Skybox::OnUpdate()
 {
-	m_transform.setPosition(camera->getPosition());
+	m_transform->setPosition(camera->getPosition());
 }
 
 std::shared_ptr<D3D11_DEPTH_STENCIL_DESC> Skybox::getDepthDesc()

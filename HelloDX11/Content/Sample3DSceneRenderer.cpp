@@ -3,12 +3,13 @@
 #include<algorithm>
 #include "Sample3DSceneRenderer.h"
 #include "Car.h"
+#include "Geometry.h"
 #include"Ground.h"
 #include"Skybox.h"
-#include"Terrain/HeightmapSampling.h"
+#include "Terrain/TerrainObject.h"
 #include"consts/consts.h"
-using namespace HelloDX11;
 
+using namespace HelloDX11;
 using namespace DirectX;
 using namespace Windows::Foundation;
 
@@ -93,7 +94,7 @@ void Sample3DSceneRenderer::Render()
 		0
 		);
 	
-	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
 	context->IASetInputLayout(m_inputLayout.Get());
 
@@ -182,11 +183,12 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 
 void Sample3DSceneRenderer::InitObjects()
 {
-	HeightmapSampling sampler;
-	sampler.LoadHeightmapTGA("/test.txt");//PathConsts::AssetPath +"StoreLogo.scale-200.png");
-	root = std::make_shared<Ground>();
+	root = std::make_shared<TerrainObject>();
+	root->GetTransform()->setPosition(XMVectorSet(-200.0f, -50.0f, -200.0f, 1));
+	//root = std::make_shared<Ground>();
+	//root->GetTransform()->setPosition(XMVectorSet(0, -100.0f, 0, 1));
 	std::shared_ptr<RenderObject> car = std::make_shared<Car>();
-	car->GetTransform().setPosition(XMVectorSet(0, 0.18f, 0, 1));
+	car->GetTransform()->setPosition(XMVectorSet(0, 0.18f, 0, 1));
 	std::shared_ptr<RenderObject> sky = std::make_shared<Skybox>();
 	Skybox* p = (Skybox*)sky.get();
 	p->SetFollow(&camera);

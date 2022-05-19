@@ -18,5 +18,5 @@ void Wheel::OnCreateResource()
 	{
 		mesh.vertexVec[i].color = color;
 	}
-	CreateResourceWithVertexData(mesh);
+	this->CreateResourceWithVertexData(mesh);
 }

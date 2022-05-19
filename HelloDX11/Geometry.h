@@ -19,6 +19,8 @@ namespace Geometry
             DirectX::XMFLOAT4 tangent;
             DirectX::XMFLOAT4 color;
             DirectX::XMFLOAT2 tex;
+            //VertexData() :pos(),normal(),tangent(),color(),tex()
+            //{}
         };
 
         // 根据目标顶点类型选择性将数据插入
@@ -66,7 +68,7 @@ namespace Geometry
 
 
     // 网格数据
-    template<class VertexType = VertexPosNormalTex, class IndexType = DWORD>
+    template<class VertexType = VertexPosNormalTex, class IndexType = UINT>
     struct MeshData
     {
         std::vector<VertexType> vertexVec;    // 顶点数组
@@ -81,18 +83,18 @@ namespace Geometry
     };
 
     // 创建立方体网格数据
-    template<class VertexType = VertexPosNormalTex, class IndexType = DWORD>
+    template<class VertexType = VertexPosNormalTex, class IndexType = UINT>
     MeshData<VertexType, IndexType> CreateBox(float width = 2.0f, float height = 2.0f, float depth = 2.0f,
         const DirectX::XMFLOAT4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
 
     // 创建只有圆柱体侧面的网格数据，slices越大，精度越高
-    template<class VertexType = VertexPosNormalTex, class IndexType = DWORD>
+    template<class VertexType = VertexPosNormalTex, class IndexType = UINT>
     MeshData<VertexType, IndexType> CreateCylinderNoCap(float radius = 1.0f, float height = 2.0f, UINT slices = 20, UINT stacks=10, float texU=0, float texV=0,
         const DirectX::XMFLOAT4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
 
 
     // 创建圆柱体网格数据，slices越大，精度越高。
-    template<class VertexType = VertexPosNormalTex, class IndexType = DWORD>
+    template<class VertexType = VertexPosNormalTex, class IndexType = UINT>
     MeshData<VertexType, IndexType> CreateCylinder(float radius = 1.0f, float height = 2.0f, UINT slices = 20, UINT stacks=10, float texU=0, float texV=0,
         const DirectX::XMFLOAT4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
 

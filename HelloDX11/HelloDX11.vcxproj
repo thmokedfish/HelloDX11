@@ -263,6 +263,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Common\DeviceResources.h" />
     <ClInclude Include="Car.h" />
+    <ClInclude Include="Common\Object.h" />
     <ClInclude Include="Common\Tools\tgaimage.h" />
     <ClInclude Include="Common\Transfrom.h" />
     <ClInclude Include="consts\consts.h" />
@@ -289,6 +290,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Common\DeviceResources.cpp" />
     <ClCompile Include="Car.cpp" />
+    <ClCompile Include="Common\Object.cpp" />
     <ClCompile Include="Common\Tools\tgaimage.cpp" />
     <ClCompile Include="Common\Transform.cpp" />
     <ClCompile Include="Content\Terrain\HeightmapSampling.cpp" />

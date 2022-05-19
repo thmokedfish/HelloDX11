@@ -2,7 +2,7 @@
 #include "RenderObject.h"
 using namespace HelloDX11;
 using namespace DirectX;
-RenderObject::RenderObject():m_transform()
+RenderObject::RenderObject():m_transform(std::make_shared<Transform>())
 {
 }
 const DX::StepTimer* RenderObject::m_timer ;
@@ -15,15 +15,18 @@ void RenderObject::Update()
 	}
 	OnUpdate();
 }
-
-Transform& RenderObject::GetTransform()
+void RenderObject::OnUpdate()
+{
+	// 子类实现
+}
+std::shared_ptr<Transform> RenderObject::GetTransform()
 {
 	return m_transform;
 }
 
 void RenderObject::Render(const XMMATRIX& parentModel)
 {
-	XMMATRIX model = m_transform.GetModelMatrix() * parentModel;
+	XMMATRIX model = m_transform->GetModelMatrix() * parentModel;
 	for (auto p : childs)
 	{
 		p->Render(model);
@@ -58,7 +61,7 @@ void RenderObject::Render(const XMMATRIX& parentModel)
 
 	context->IASetIndexBuffer(
 		m_indexBuffer.Get(),
-		DXGI_FORMAT_R16_UINT, // 每个索引都是一个 16 位无符号整数(short)。
+		DXGI_FORMAT_R32_UINT, // 每个索引都是一个 16 位无符号整数(short)。
 		0
 	);
 
@@ -105,7 +108,10 @@ void RenderObject::CreateResources(const std::shared_ptr<DX::DeviceResources>& d
 void RenderObject::addChild(std::shared_ptr<RenderObject> child)
 {
 	childs.push_back(child);
+	child->GetTransform()->setParent(m_transform);
+	m_transform->childs.push_back(child->GetTransform());
 }
+
 
 void RenderObject::ReleaseDeviceDependentResources()
 {
@@ -127,7 +133,7 @@ std::shared_ptr<D3D11_DEPTH_STENCIL_DESC> RenderObject::getDepthDesc()
 	return depthDesc;
 }
 
-std::shared_ptr< D3D11_RASTERIZER_DESC> RenderObject::getRasterizerDesc()
+std::shared_ptr<D3D11_RASTERIZER_DESC> RenderObject::getRasterizerDesc()
 {
 	std::shared_ptr<D3D11_RASTERIZER_DESC> rasterizerDesc = std::make_shared<D3D11_RASTERIZER_DESC>();
 	ZeroMemory(rasterizerDesc.get(), sizeof(*rasterizerDesc));

@@ -38,14 +38,20 @@ TGAImage& TGAImage::operator =(const TGAImage& img) {
     return *this;
 }
 
-bool TGAImage::read_tga_file(const char* filename) {
+bool TGAImage::read_tga_file(std::string filename) {
     if (data) delete[] data;
     data = NULL;
     std::ifstream in;
     try
     {
+        auto platformPath = Windows::Storage::ApplicationData::Current->RoamingFolder->Path;
+        std::wstring platformPathW(platformPath->Begin());
+        std::string convertedPlatformPath(platformPathW.begin(), platformPathW.end());
+        filename = convertedPlatformPath + filename;
+        char* res = strerror(errno);
         in.open(filename, std::ios::binary);
         if (!in)
+            res = strerror(errno);
             throw std::system_error(errno, std::system_category(), "failed to open file");
     }
     catch (const std::exception& e)
