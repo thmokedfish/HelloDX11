@@ -8,7 +8,7 @@
 #include"Skybox.h"
 #include "Terrain/TerrainObject.h"
 #include"consts/consts.h"
-
+#include "Common/GameManager.h"
 using namespace HelloDX11;
 using namespace DirectX;
 using namespace Windows::Foundation;
@@ -184,17 +184,17 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 void Sample3DSceneRenderer::InitObjects()
 {
 	root = std::make_shared<TerrainObject>();
-	root->GetTransform()->setPosition(XMVectorSet(-200.0f, -50.0f, -200.0f, 1));
+	root->GetTransform()->setPosition(XMVectorSet(-100.0f, -50.0f, -100.0f, 1));
 	//root = std::make_shared<Ground>();
 	//root->GetTransform()->setPosition(XMVectorSet(0, -100.0f, 0, 1));
-	std::shared_ptr<RenderObject> car = std::make_shared<Car>();
-	car->GetTransform()->setPosition(XMVectorSet(0, 0.18f, 0, 1));
+	//std::shared_ptr<RenderObject> car = std::make_shared<Car>();
+	//car->GetTransform()->setPosition(XMVectorSet(0, 0.18f, 0, 1));
 	std::shared_ptr<RenderObject> sky = std::make_shared<Skybox>();
 	Skybox* p = (Skybox*)sky.get();
 	p->SetFollow(&camera);
-	root->addChild(car);
+	//root->addChild(car);
 	root->addChild(sky);
-	camera.SetFollow(car.get());
+	//camera.SetFollow(car.get());
 	root->CreateResources(m_deviceResources);
 
 }

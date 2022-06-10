@@ -10,6 +10,6 @@ namespace HelloDX11
 		void OnCreateResource() override;
 	public:
 		TerrainObject();
-		
+		void OnUpdate() override;
 	};
 }

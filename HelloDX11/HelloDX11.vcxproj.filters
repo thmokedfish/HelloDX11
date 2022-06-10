@@ -131,6 +131,17 @@
     <ClCompile Include="Common\Object.cpp">
       <Filter>通用\框架</Filter>
     </ClCompile>
+    <ClCompile Include="Common\StepTimer.cpp">
+      <Filter>通用</Filter>
+    </ClCompile>
+    <ClCompile Include="Content\Terrain\QuadTree.cpp">
+      <Filter>内容\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\GameManager.cpp">
+      <Filter>通用\框架</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Tools\DDSTextureLoader11.cpp" />
+    <ClCompile Include="Common\Tools\WICTextureLoader11.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -182,6 +193,14 @@
     <ClInclude Include="Common\Object.h">
       <Filter>通用\框架</Filter>
     </ClInclude>
+    <ClInclude Include="Content\Terrain\QuadTree.h">
+      <Filter>内容\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\GameManager.h">
+      <Filter>通用\框架</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Tools\DDSTextureLoader11.h" />
+    <ClInclude Include="Common\Tools\WICTextureLoader11.h" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />

@@ -15,14 +15,18 @@ namespace HelloDX11
 		void SetFollow(RenderObject* following);
 		void OnUpdate();
 		DirectX::XMVECTOR getPosition();
-		
+		Transform m_transform;
+		float sensitivity = 0.002f;
+		float speed = 10;
 	private:
-		DirectX::XMVECTOR atorigin;
-		DirectX::XMVECTOR eye;
-		DirectX::XMVECTOR at;
-		DirectX::XMVECTOR up;
-		DirectX::XMVECTOR carorigin;
-		DirectX::XMVECTOR eyeorigin;
+		DirectX::XMVECTOR _handleInputVector();
+		void _thirdPerspectiveUpdate();
+		void _firstPerspectiveUpdate();
+		DirectX::XMFLOAT3 atorigin;
+		DirectX::XMFLOAT3 at;
+		DirectX::XMFLOAT3 up;
+		DirectX::XMFLOAT3 target_origin;
+		DirectX::XMFLOAT3 eyeorigin;
 		//DirectX::XMVECTOR eyediff;
 		//DirectX::XMVECTOR atdiff;
 		RenderObject* following;

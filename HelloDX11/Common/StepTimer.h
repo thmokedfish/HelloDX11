@@ -8,6 +8,7 @@ namespace DX
 	class StepTimer
 	{
 	public:
+		static StepTimer const* timer;
 		StepTimer() : 
 			m_elapsedTicks(0),
 			m_totalTicks(0),
@@ -180,4 +181,5 @@ namespace DX
 		bool m_isFixedTimeStep;
 		uint64 m_targetElapsedTicks;
 	};
+
 }

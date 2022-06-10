@@ -1,7 +1,7 @@
 ﻿#include "pch.h"
 #include "HelloDX11Main.h"
 #include "Common\DirectXHelper.h"
-
+#include "Common/GameManager.h"
 using namespace HelloDX11;
 using namespace Windows::Foundation;
 using namespace Windows::System::Threading;
@@ -25,6 +25,9 @@ HelloDX11Main::HelloDX11Main(const std::shared_ptr<DX::DeviceResources>& deviceR
 	m_timer.SetFixedTimeStep(true);
 	m_timer.SetTargetElapsedSeconds(1.0 / 60);
 	*/
+	DX::StepTimer::timer = &m_timer;
+	GameManager::StepTimer = &m_timer;
+	GameManager::DeviceResources = m_deviceResources;
 }
 
 HelloDX11Main::~HelloDX11Main()
